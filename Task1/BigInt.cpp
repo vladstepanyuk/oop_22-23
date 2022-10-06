@@ -183,7 +183,7 @@ BigInt& BigInt::operator^=(const BigInt &val) {
         helpStr1[i] = (helpStr1[i] != helpStr2[i]) + charIntDiffAscii;
     }
     for (int i = helpStr2.size(); i < helpStr1.size(); ++i) {
-        helpStr1[i] = helpStr1[i] = '1' ? '1' : '0';
+        helpStr1[i] = helpStr1[i] == '1' ? '1' : '0';
     }
     reverseStr(helpStr1);
     *this = convertBinToNum(helpStr1);
