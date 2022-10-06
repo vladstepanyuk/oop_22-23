@@ -98,7 +98,8 @@ BigInt &BigInt::operator+=(const BigInt &val2) {
     for (int i = 0; i < len; ++i) {
         int rez = val11.sign() * (result[i] - DifferenceAsciiCodeIntSymbol) +
                   val22.sign() * (val22.number[val22.length() - i - 1] - DifferenceAsciiCodeIntSymbol);
-        rez = rez >= 0 ? rez : (-20 - rez); // если результат сложения меньше нуля, то мы "занимаем" один у старшего разряда
+        rez = rez >= 0 ? rez : (-20 -
+                                rez); // если результат сложения меньше нуля, то мы "занимаем" один у старшего разряда
         result[i] = abs(rez) % 10 + DifferenceAsciiCodeIntSymbol;
         int j = i + 1;
         while (abs(rez) > 9) {
