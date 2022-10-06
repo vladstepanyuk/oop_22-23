@@ -1,7 +1,5 @@
-#ifndef ___BIGINT_H
-#define ___BIGINT_H
+#pragma once
 
-//#include "BigInt.cpp"
 #include <iostream>
 #include <string>
 
@@ -102,5 +100,3 @@ BigInt operator|(const BigInt &val1, const BigInt &val2);
 
 
 std::ostream &operator<<(std::ostream &o, const BigInt &i);
-
-#endif //___BIGINT_H

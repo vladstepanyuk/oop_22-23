@@ -2,7 +2,7 @@
 #include <string>
 #include "BigInt.h"
 
-#define charIntDiffAscii '0'
+const char charIntDiffAscii = '0';
 
 BigInt::BigInt() : number(1, '0'), isPositive(true) {};
 
