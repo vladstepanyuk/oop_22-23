@@ -63,10 +63,9 @@ public:
 
     operator std::string() const;
 
+private:
 
     int sign() const;
-
-private:
 
     size_t length() const;
 
