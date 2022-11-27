@@ -1,25 +1,27 @@
 #pragma once
-
 #include "Field.h"
 #include "InputFileParser.h"
 #include "Interface.h"
 
-class LifeConway {
-public:
+namespace lifeConway {
+    class LifeConway final {
+    public:
 
-    LifeConway(int argc, char **argv);
+        LifeConway(int argc, char **argv);
 
-    void setGameMode(Interface *pInterface);
+        void setGameMode(Interface *pInterface);
 
-    virtual void startGame();
+        virtual void startGame();
 
-    Field * returnField();
+        Field &returnField();
 
-    ~LifeConway();
+        ~LifeConway();
 
-private:
-    Field field;
-    Interface *anInterface;
-    std::string outputFileName;
-    int ticksNum;
-};
+    private:
+        Field field;
+        Interface *anInterface;
+        std::string outputFileName;
+        int ticksNum;
+    };
+
+}

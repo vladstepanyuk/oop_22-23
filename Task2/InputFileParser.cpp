@@ -8,6 +8,8 @@ const char CharNine = '9';
 const char CharIsNotAlive = -78;
 const char CharIsAlive = -79;
 
+using namespace lifeConway;
+
 Field InputFileParser::pars(char *inputFileName) {
     Field field;
     std::string str;
@@ -59,9 +61,9 @@ Field InputFileParser::pars(char *inputFileName) {
         return field;
     }
 
-    std::vector<std::vector<char>> field1;
+    std::vector<std::string> field1;
     for (i = 0; i < n; ++i) {
-        field1.push_back(std::vector<char>(m, CharIsNotAlive));
+        field1.push_back(std::string (m, CharIsNotAlive));
     }
 
     for (int x, y; inputFile >> str;) {

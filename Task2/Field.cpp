@@ -5,7 +5,13 @@ const char CharIsNotAlive = -78;
 const char CharIsAlive = -79;
 const char CharB = 'B';
 const std::string StrSharpS = "/S";
+const int StandardFieldSize = 9;
+const std::vector<char> StandardBRules = {3};
+const std::vector<char> StandardSRules = {2, 3};
+const std::string StandardName = "NoName";
 
+
+using namespace lifeConway;
 //000000000 standard field
 //000000000
 //000000000
@@ -17,29 +23,29 @@ const std::string StrSharpS = "/S";
 //000000000
 
 Field::Field() {
-    name = "NoName";
-    B = {3};
-    S = {2, 3};
-    for (int i = 0; i < 9; ++i) {
-        field.push_back(std::vector<char>(9, CharIsNotAlive));
+    name = StandardName;
+    B = StandardBRules;
+    S = StandardSRules;
+    for (int i = 0; i < StandardFieldSize; ++i) {
+        field.push_back(std::string(StandardFieldSize, CharIsNotAlive));
     }
     field[3][4] = CharIsAlive;
     field[4][4] = CharIsAlive;
     field[5][4] = CharIsAlive;
 }
 
-Field::Field(std::vector<std::vector<char>> field, std::vector<char> B, std::vector<char> S, std::string name)
+Field::Field(const std::vector<std::string> &field, const std::vector<char> &B, const std::vector<char> &S, const std::string &name)
         : name(name), B(B), S(S), field(field) {}
 
 
 Field::Field(const Field &field) = default;
 
 
-std::vector<std::vector<char>> Field::returnField() {
+std::vector<std::string> & Field::returnField() {
     return this->field;
 }
 
-std::string Field::returnName() {
+const std::string & Field::returnName() {
     return this->name;
 }
 

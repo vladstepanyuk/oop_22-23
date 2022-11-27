@@ -3,33 +3,33 @@
 #include <string>
 #include <iostream>
 
+namespace lifeConway{
+    class Field final {
+    public:
+        Field();
 
-class Field {
-public:
-    Field();
+        Field(const std::vector<std::string> &field, const std::vector<char> &B = {3}, const std::vector<char> &S = {2, 3},
+              const std::string &name = "NoName");
 
-    Field(std::vector<std::vector<char>> field, std::vector<char> B = {3}, std::vector<char> S = {2, 3},
-          std::string name = "NoName");
+        Field(const Field &field);
 
-    Field(const Field &field);
+        ~Field();
 
-    ~Field();
+        const std::string & returnName();
 
-    std::string returnName();
+        std::string returnRules();
 
-    std::string returnRules();
+        void tick(int n);
 
-    void tick(int n);
+        std::vector<std::string> & returnField();
+    private:
 
-    std::vector<std::vector<char>> returnField();
-private:
+        static bool checkCondition(Field field, int i, int j);
 
-    static bool checkCondition(Field field, int i, int j);
-
-    std::string name;
-    std::vector<char> B;
-    std::vector<char> S;
-    std::vector<std::vector<char>> field;
-};
-
+        std::string name;
+        std::vector<char> B;
+        std::vector<char> S;
+        std::vector<std::string> field;
+    };
+}
 

@@ -7,7 +7,9 @@ using namespace std;
 const char CharIsNotAlive = -78;
 const char CharIsAlive = -79;
 
-const std::vector<vector<char>> fieldTest1 = {
+using namespace lifeConway;
+
+const std::vector<std::string> fieldTest1 = {
         {CharIsNotAlive, CharIsAlive, CharIsNotAlive, CharIsNotAlive, CharIsNotAlive},
         {CharIsNotAlive, CharIsNotAlive, CharIsAlive, CharIsNotAlive, CharIsNotAlive},
         {CharIsAlive, CharIsAlive, CharIsAlive, CharIsNotAlive, CharIsNotAlive},
@@ -15,7 +17,7 @@ const std::vector<vector<char>> fieldTest1 = {
         {CharIsNotAlive, CharIsNotAlive, CharIsNotAlive, CharIsNotAlive, CharIsNotAlive}
 }; //field from in.txt
 
-const std::vector<vector<char>> fieldTest2 = {
+const std::vector<std::string> fieldTest2 = {
         {CharIsNotAlive, CharIsNotAlive, CharIsNotAlive, CharIsNotAlive, CharIsNotAlive},
         {CharIsNotAlive, CharIsNotAlive, CharIsNotAlive, CharIsNotAlive, CharIsNotAlive},
         {CharIsNotAlive, CharIsNotAlive, CharIsNotAlive, CharIsAlive, CharIsNotAlive},
@@ -24,9 +26,9 @@ const std::vector<vector<char>> fieldTest2 = {
 };
 
 TEST(test, StandartConstructorTest) {
-    vector<vector<char>> field;
+    vector<std::string> field;
     for (int i = 0; i < 9; ++i) {
-        field.push_back(std::vector<char>(9, CharIsNotAlive));
+        field.push_back(std::string(9, CharIsNotAlive));
     }
     field[3][4] = CharIsAlive;
     field[4][4] = CharIsAlive;
@@ -41,7 +43,7 @@ TEST(test, ReadFieldFromFileTest) {
     char fileName[] = "in.txt";
     InputFileParser parser;
     Field field = parser.pars(fileName);
-    vector<vector<char>> fieldChar = field.returnField();
+    vector<std::string> fieldChar = field.returnField();
 
     EXPECT_EQ(field.returnField(), fieldTest1);
     EXPECT_EQ(field.returnName(), "Universe");

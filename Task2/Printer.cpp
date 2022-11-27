@@ -6,8 +6,10 @@
 
 const char CharIsAlive = -79;
 
+using namespace lifeConway;
+
 void Printer::printTerminal(Field field) {
-    std::vector<std::vector<char>> y = field.returnField();
+    std::vector<std::string> y = field.returnField();
     for (auto & i : y) {
         for (char j : i) {
             std::cout << j;
@@ -22,7 +24,7 @@ void Printer::printFile(Field field, const std::string &fileName) {
     outputFile << "#Life 1.06" << std::endl;
     outputFile << "#N " << field.returnName() << std::endl;
     outputFile << "#R " << field.returnRules() << std::endl;
-    std::vector<std::vector<char>> field1 = field.returnField();
+    std::vector<std::string> field1 = field.returnField();
     outputFile << "#S " << field1.size() << " " << field1[0].size() << std::endl;
     for (int y = 0; y < field1.size(); ++y)
         for (int x = 0; x < field1[y].size(); ++x)
