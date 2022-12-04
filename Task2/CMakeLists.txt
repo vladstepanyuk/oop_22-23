@@ -5,8 +5,8 @@ project(Task2_TEST)
 
 set(CMAKE_CXX_STANDARD 23)
 
-set(Sources main.cpp Field.cpp Field.h LifeConway.cpp LifeConway.h InputFileParser.cpp InputFileParser.h Interface.cpp Interface.h Printer.cpp Printer.h)
-set(Sources_test  tests.cpp Field.cpp Field.h LifeConway.cpp LifeConway.h InputFileParser.cpp InputFileParser.h Interface.cpp Interface.h Printer.cpp Printer.h)
+set(Sources main.cpp Field.cpp Field.h LifeConway.cpp LifeConway.h InputFileParser.cpp InputFileParser.h Interface.cpp Interface.h Printer.cpp Printer.h ProgramContext.cpp ProgramContext.h)
+set(Sources_test  tests.cpp Field.cpp Field.h LifeConway.cpp LifeConway.h InputFileParser.cpp InputFileParser.h Interface.cpp Interface.h Printer.cpp Printer.h ProgramContext.cpp ProgramContext.h)
 
 add_subdirectory(lib/googletest-main)
 

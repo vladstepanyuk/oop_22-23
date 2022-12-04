@@ -2,57 +2,64 @@
 #include "LifeConway.h"
 #include <vector>
 
-using namespace std;
+//using namespace std;
+namespace {
+    const std::vector<std::string> fieldTest1 = {
+            {lifeConway::CharIsNotAlive, lifeConway::CharIsAlive, lifeConway::CharIsNotAlive, lifeConway::CharIsNotAlive, lifeConway::CharIsNotAlive},
+            {lifeConway::CharIsNotAlive, lifeConway::CharIsNotAlive, lifeConway::CharIsAlive, lifeConway::CharIsNotAlive, lifeConway::CharIsNotAlive},
+            {lifeConway::CharIsAlive, lifeConway::CharIsAlive, lifeConway::CharIsAlive, lifeConway::CharIsNotAlive, lifeConway::CharIsNotAlive},
+            {lifeConway::CharIsNotAlive, lifeConway::CharIsNotAlive, lifeConway::CharIsNotAlive, lifeConway::CharIsNotAlive, lifeConway::CharIsNotAlive},
+            {lifeConway::CharIsNotAlive, lifeConway::CharIsNotAlive, lifeConway::CharIsNotAlive, lifeConway::CharIsNotAlive, lifeConway::CharIsNotAlive}
+    }; //field from in.txt
 
-const char CharIsNotAlive = -78;
-const char CharIsAlive = -79;
+    const std::vector<std::string> fieldTest2 = {
+            {lifeConway::CharIsNotAlive, lifeConway::CharIsNotAlive, lifeConway::CharIsNotAlive, lifeConway::CharIsNotAlive, lifeConway::CharIsNotAlive},
+            {lifeConway::CharIsNotAlive, lifeConway::CharIsNotAlive, lifeConway::CharIsNotAlive, lifeConway::CharIsNotAlive, lifeConway::CharIsNotAlive},
+            {lifeConway::CharIsNotAlive, lifeConway::CharIsNotAlive, lifeConway::CharIsNotAlive, lifeConway::CharIsAlive, lifeConway::CharIsNotAlive},
+            {lifeConway::CharIsNotAlive, lifeConway::CharIsNotAlive, lifeConway::CharIsNotAlive, lifeConway::CharIsNotAlive, lifeConway::CharIsAlive},
+            {lifeConway::CharIsNotAlive, lifeConway::CharIsNotAlive, lifeConway::CharIsAlive, lifeConway::CharIsAlive, lifeConway::CharIsAlive}
+    };
 
-using namespace lifeConway;
+    const std::string TestStringStream = "#Life 1.06\n#N Universe\n#R B3/S23\n#S 5 5\n0 2\n1 0\n1 2\n2 1\n2 2";
 
-const std::vector<std::string> fieldTest1 = {
-        {CharIsNotAlive, CharIsAlive, CharIsNotAlive, CharIsNotAlive, CharIsNotAlive},
-        {CharIsNotAlive, CharIsNotAlive, CharIsAlive, CharIsNotAlive, CharIsNotAlive},
-        {CharIsAlive, CharIsAlive, CharIsAlive, CharIsNotAlive, CharIsNotAlive},
-        {CharIsNotAlive, CharIsNotAlive, CharIsNotAlive, CharIsNotAlive, CharIsNotAlive},
-        {CharIsNotAlive, CharIsNotAlive, CharIsNotAlive, CharIsNotAlive, CharIsNotAlive}
-}; //field from in.txt
+    const int ArgcWithoutFiles = 1;
 
-const std::vector<std::string> fieldTest2 = {
-        {CharIsNotAlive, CharIsNotAlive, CharIsNotAlive, CharIsNotAlive, CharIsNotAlive},
-        {CharIsNotAlive, CharIsNotAlive, CharIsNotAlive, CharIsNotAlive, CharIsNotAlive},
-        {CharIsNotAlive, CharIsNotAlive, CharIsNotAlive, CharIsAlive, CharIsNotAlive},
-        {CharIsNotAlive, CharIsNotAlive, CharIsNotAlive, CharIsNotAlive, CharIsAlive},
-        {CharIsNotAlive, CharIsNotAlive, CharIsAlive, CharIsAlive, CharIsAlive}
-};
+    const std::string StandardRules = "B3/S23";
+}
+
 
 TEST(test, StandartConstructorTest) {
-    vector<std::string> field;
+    std::vector<std::string> field; // default field filling
     for (int i = 0; i < 9; ++i) {
-        field.push_back(std::string(9, CharIsNotAlive));
+        field.push_back(std::string(9, lifeConway::CharIsNotAlive));
     }
-    field[3][4] = CharIsAlive;
-    field[4][4] = CharIsAlive;
-    field[5][4] = CharIsAlive;
-    Field test;
+    field[3][4] = lifeConway::CharIsAlive;
+    field[4][4] = lifeConway::CharIsAlive;
+    field[5][4] = lifeConway::CharIsAlive;
+
+    lifeConway::ProgramContext context(ArgcWithoutFiles, nullptr);
+    lifeConway::InputFileParser parser;
+    lifeConway::Field test = parser.pars(*context.returnInStream());
     EXPECT_EQ(test.returnField(), field);
-    EXPECT_EQ(test.returnName(), "NoName");
-    EXPECT_EQ(test.returnRules(), "B3/S23");
+    EXPECT_EQ(test.returnName(), lifeConway::StandardName);
+    EXPECT_EQ(test.returnRules(), StandardRules);
 }
 
 TEST(test, ReadFieldFromFileTest) {
-    char fileName[] = "in.txt";
-    InputFileParser parser;
-    Field field = parser.pars(fileName);
-    vector<std::string> fieldChar = field.returnField();
+    std::stringstream testStream;
+    testStream << TestStringStream;
+    lifeConway::InputFileParser parser;
+    lifeConway::Field field = parser.pars(testStream);
+    std::vector<std::string> fieldChar = field.returnField();
 
     EXPECT_EQ(field.returnField(), fieldTest1);
     EXPECT_EQ(field.returnName(), "Universe");
-    EXPECT_EQ(field.returnRules(), "B3/S23");
+    EXPECT_EQ(field.returnRules(), StandardRules);
 
 }
 
 TEST(test, TickTest) {
-    Field field(fieldTest1);
+    lifeConway::Field field(fieldTest1);
     field.tick(8);
 
     EXPECT_EQ(field.returnField(), fieldTest2);

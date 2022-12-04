@@ -2,12 +2,14 @@
 #include "Field.h"
 #include "InputFileParser.h"
 #include "Interface.h"
+#include "ProgramContext.h"
 
 namespace lifeConway {
+
     class LifeConway final {
     public:
 
-        LifeConway(int argc, char **argv);
+        explicit LifeConway(ProgramContext &context);
 
         void setGameMode(Interface *pInterface);
 
@@ -20,7 +22,7 @@ namespace lifeConway {
     private:
         Field field;
         Interface *anInterface;
-        std::string outputFileName;
+        std::ostream *outputStream;
         int ticksNum;
     };
 

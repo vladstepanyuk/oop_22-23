@@ -4,12 +4,22 @@
 #include <iostream>
 
 namespace lifeConway{
+    extern const std::vector<char> StandardBRules;
+    extern const std::vector<char> StandardSRules;
+
+    extern const char DiffAsciiCodeIntSymbol;
+
+    extern const char CharIsNotAlive;
+    extern const char CharIsAlive;
+
+    extern const std::string StandardName;
+
     class Field final {
     public:
         Field();
 
-        Field(const std::vector<std::string> &field, const std::vector<char> &B = {3}, const std::vector<char> &S = {2, 3},
-              const std::string &name = "NoName");
+        Field(const std::vector<std::string> &field, const std::vector<char> &B = StandardBRules, const std::vector<char> &S = StandardSRules,
+              const std::string &name = StandardName);
 
         Field(const Field &field);
 

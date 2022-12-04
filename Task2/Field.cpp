@@ -1,55 +1,39 @@
 #include "Field.h"
 
-const char DiffAsciiCodeIntSymbol = '0';
-const char CharIsNotAlive = -78;
-const char CharIsAlive = -79;
-const char CharB = 'B';
-const std::string StrSharpS = "/S";
-const int StandardFieldSize = 9;
-const std::vector<char> StandardBRules = {3};
-const std::vector<char> StandardSRules = {2, 3};
-const std::string StandardName = "NoName";
 
+namespace {
 
-using namespace lifeConway;
-//000000000 standard field
-//000000000
-//000000000
-//000010000
-//000010000
-//000010000
-//000000000
-//000000000
-//000000000
-
-Field::Field() {
-    name = StandardName;
-    B = StandardBRules;
-    S = StandardSRules;
-    for (int i = 0; i < StandardFieldSize; ++i) {
-        field.push_back(std::string(StandardFieldSize, CharIsNotAlive));
-    }
-    field[3][4] = CharIsAlive;
-    field[4][4] = CharIsAlive;
-    field[5][4] = CharIsAlive;
+    const char CharB = 'B';
+    const std::string StrSharpS = "/S";
+    const std::vector<int> xDiff = {-1, 0, 1};
+    const std::vector<int> yDiff = {-1, 0, 1};
 }
 
-Field::Field(const std::vector<std::string> &field, const std::vector<char> &B, const std::vector<char> &S, const std::string &name)
+const char lifeConway::DiffAsciiCodeIntSymbol = '0';
+const std::vector<char> lifeConway::StandardBRules = {3};
+const std::vector<char> lifeConway::StandardSRules = {2, 3};
+const char lifeConway::CharIsAlive = -79;
+const char lifeConway::CharIsNotAlive = -78;
+const std::string lifeConway::StandardName = "NoName";
+
+lifeConway::Field::Field() = default;
+
+lifeConway::Field::Field(const std::vector<std::string> &field, const std::vector<char> &B, const std::vector<char> &S, const std::string &name)
         : name(name), B(B), S(S), field(field) {}
 
 
-Field::Field(const Field &field) = default;
+lifeConway::Field::Field(const Field &field) = default;
 
 
-std::vector<std::string> & Field::returnField() {
+std::vector<std::string> & lifeConway::Field::returnField() {
     return this->field;
 }
 
-const std::string & Field::returnName() {
+const std::string & lifeConway::Field::returnName() {
     return this->name;
 }
 
-std::string Field::returnRules() {
+std::string lifeConway::Field::returnRules() {
     std::string rules = std::string(1, CharB);
     for (int i = 0; i < this->B.size(); ++i) {
         rules += (this->B[i] + DiffAsciiCodeIntSymbol);
@@ -61,7 +45,7 @@ std::string Field::returnRules() {
     return rules;
 }
 
-void Field::tick(int n) {
+void lifeConway::Field::tick(int n) {
     for (int h = 0; h < n; h++) {
         Field newField = *this;
         int n1 = this->field.size();
@@ -77,12 +61,11 @@ void Field::tick(int n) {
     }
 }
 
-bool Field::checkCondition(Field field, int i, int j) {
-    int xDiff[] = {-1, 0, 1};
-    int yDiff[] = {-1, 0, 1};
+bool lifeConway::Field::checkCondition(Field field, int i, int j) {
+
     int counter = 0;
-    for (int k = 0; k < 3; ++k)
-        for (int l = 0; l < 3; ++l) {
+    for (int k = 0; k < xDiff.size(); ++k)
+        for (int l = 0; l < yDiff.size(); ++l) {
             int x1 = (field.field.size() + i + xDiff[k]) % field.field.size();
             int y1 = (field.field[0].size() + j + yDiff[l]) % field.field[0].size();
             if (field.field[x1][y1] == CharIsAlive && (x1 != i || y1 != j)) counter++;
@@ -96,6 +79,6 @@ bool Field::checkCondition(Field field, int i, int j) {
     }
 }
 
-Field::~Field() = default;
+lifeConway::Field::~Field() = default;
 
 

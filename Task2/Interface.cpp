@@ -4,21 +4,21 @@
 
 #include "Interface.h"
 
-const char CharSpace = ' ';
-const char CharOne = '1';
-const std::string TickCommand1 = "tick";
-const std::string TickCommand2 = "t";
-const std::string DumpCommand = "dump";
-const std::string ExitCommand = "exit";
-const std::string  HelpCommand = "help";
-
-using namespace lifeConway;
-
-void Interface::game(Field &field, int n, const std::string &outputFileNamed) {
-
+namespace {
+    const char CharSpace = ' ';
+    const char CharOne = '1';
+    const std::string TickCommand1 = "tick";
+    const std::string TickCommand2 = "t";
+    const std::string DumpCommand = "dump";
+    const std::string ExitCommand = "exit";
+    const std::string  HelpCommand = "help";
 }
 
-void OnlineInterface::game(Field &field, int n, const std::string &outputFileName) {
+//void lifeConway::Interface::game(Field &field, int n, std::ostream *outputStream) {
+//
+//}
+
+void lifeConway::OnlineInterface::game(Field &field, int n, std::ostream *outputStream) {
     std::string str;
     int iterationsNum = 0;
     std::cout << "num of iterations:" << iterationsNum << std::endl;
@@ -53,7 +53,7 @@ void OnlineInterface::game(Field &field, int n, const std::string &outputFileNam
     }
 }
 
-void OnlineInterface::returnCommandArg(const std::string &string, std::string &command, std::string &arg) {
+void lifeConway::OnlineInterface::returnCommandArg(const std::string &string, std::string &command, std::string &arg) {
     size_t firstSpaceIndex = string.find(CharSpace);
     if (firstSpaceIndex != std::string::npos) {
         command = string.substr(0, firstSpaceIndex);
@@ -68,7 +68,7 @@ void OnlineInterface::returnCommandArg(const std::string &string, std::string &c
     }
 }
 
-void OnlineInterface::tickCommand(Field &field, const std::string &arg, int &iterationsNum, Printer &printer) {
+void lifeConway::OnlineInterface::tickCommand(Field &field, const std::string &arg, int &iterationsNum, Printer &printer) {
     char *err;
     int n = strtol(arg.c_str(), &err, 10);
     if (*err != 0) {
@@ -82,19 +82,22 @@ void OnlineInterface::tickCommand(Field &field, const std::string &arg, int &ite
     printer.printTerminal(field);
 }
 
-void OnlineInterface::printHelp() {
+void lifeConway::OnlineInterface::printHelp() {
     system("CLS");
     std::cout << "dump filename - save universe to file" << std::endl;
     std::cout << "tick n (t n) - calculate n iterations and print field" << std::endl;
     std::cout << "exit - stop game" << std::endl;
 }
 
-void OnlineInterface::dumpCommand(Field &field, const std::string &arg, Printer &printer) {
-    printer.printFile(field, arg);
+void lifeConway::OnlineInterface::dumpCommand(Field &field, const std::string &arg, Printer &printer) {
+    std::ofstream outFile;
+    outFile.open(arg);
+    printer.printFile(field, outFile);
+    outFile.close();
 }
 
-void OfflineInterface::game(Field &field, int n, const std::string &outputFileName) {
+void lifeConway::OfflineInterface::game(Field &field, int n, std::ostream *outputStream) {
     field.tick(n);
     Printer printer;
-    printer.printFile(field, outputFileName);
+    printer.printFile(field, *outputStream);
 }

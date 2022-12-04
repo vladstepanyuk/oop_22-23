@@ -3,62 +3,54 @@
 //
 #include "InputFileParser.h"
 
-const char CharZero = '0';
-const char CharNine = '9';
-const char CharIsNotAlive = -78;
-const char CharIsAlive = -79;
+namespace {
+    const std::string String1_06Format = "#Life 1.06";
+    const std::string StringName = "#N";
+    const std::string RuleBirth = "#R B";
+    const std::string StrSharpS = "/S";
+    const std::string StingSize = "#S";
+}
 
-using namespace lifeConway;
-
-Field InputFileParser::pars(char *inputFileName) {
-    Field field;
+lifeConway::Field lifeConway::InputFileParser::pars(std::istream &inputStream) {
     std::string str;
-    std::ifstream inputFile(inputFileName);
 
-    if (std::getline(inputFile, str) && str != "#Life 1.06") {
+    if (std::getline(inputStream, str) && str != String1_06Format) {
         throw std::exception("wrong file format");
-        return field;
     }
 
     std::string name;
-    if (std::getline(inputFile, str) && str.substr(0, 2) != "#N") {
+    if (std::getline(inputStream, str) && str.substr(0, StringName.size()) != StringName) {
         throw std::exception("wrong file format");
-        return field;
     }
-    name = str.substr(3);
+    name = str.substr(StringName.size() + 1);
 
     std::vector<char> B;
     std::vector<char> S;
-    if (std::getline(inputFile, str) && str.substr(0, 4) != "#R B") {
+    if (std::getline(inputStream, str) && str.substr(0, RuleBirth.size()) != RuleBirth) {
         throw std::exception("wrong file format");
-        return field;
     }
     int i;
-    for (i = 4; std::isdigit(str[i]); ++i) B.push_back(str[i] - CharZero);
-    if (str.substr(i, 2) != "/S") {
+    for (i = RuleBirth.size(); std::isdigit(str[i]); ++i) B.push_back(str[i] - DiffAsciiCodeIntSymbol);
+    if (str.substr(i, StrSharpS.size()) != StrSharpS) {
         throw std::exception("wrong file format");
-        return field;
     }
-    for (i += 2; std::isdigit(str[i]); ++i) S.push_back(str[i] - CharZero);
+    for (i += StrSharpS.size(); std::isdigit(str[i]); ++i) S.push_back(str[i] - DiffAsciiCodeIntSymbol);
 
     int n, m;
-    inputFile >> str;
-    if (str != "#S") {
+    inputStream >> str;
+    if (str != StingSize) {
         throw std::exception("wrong file format");
-        return field;
     }
-    inputFile >> str;
+    inputStream >> str;
     char *err;
     n = strtol(str.c_str(), &err, 10);
     if (*err != 0) {
         throw std::exception("wrong file format");
-        return field;
     }
-    inputFile >> str;
+    inputStream >> str;
     m = strtol(str.c_str(), &err, 10);
     if (*err != 0) {
         throw std::exception("wrong file format");
-        return field;
     }
 
     std::vector<std::string> field1;
@@ -66,23 +58,20 @@ Field InputFileParser::pars(char *inputFileName) {
         field1.push_back(std::string (m, CharIsNotAlive));
     }
 
-    for (int x, y; inputFile >> str;) {
+    for (int x, y; inputStream >> str;) {
         x = strtol(str.c_str(), &err, 10);
         if (*err != 0) {
             throw std::exception("wrong file format");
-            return field;
         }
-        inputFile >> str;
+        inputStream >> str;
         y = strtol(str.c_str(), &err, 10);
         if (*err != 0) {
             throw std::exception("wrong file format");
-            return field;
         }
         field1[y][x] = CharIsAlive;
     }
 
-    field = Field(field1, B, S, name);
+    Field field = Field(field1, B, S, name);
 
-    inputFile.close();
     return field;
 }

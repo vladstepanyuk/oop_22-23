@@ -9,12 +9,12 @@
 namespace lifeConway {
     class Interface {
     public:
-        virtual void game(Field &field, int n , const std::string &outputFileNamed);
+        virtual void game(Field &field, int n , std::ostream *outputStream) = 0;
     };
 
     class OnlineInterface : public Interface {
     public:
-        void game(Field &field, int n, const std::string &outputFileName) override;
+        void game(Field &field, int n , std::ostream *outputStream) override;
     private:
         void returnCommandArg(const std::string &string, std::string &command, std::string &arg);
         void tickCommand(Field &field, const std::string &arg, int &iterationsNum, Printer &printer);
@@ -24,6 +24,6 @@ namespace lifeConway {
 
     class OfflineInterface : public Interface {
     public:
-        void game(Field &field, int n, const std::string &outputFileName) override;
+        void game(Field &field, int n , std::ostream *outputStream) override;
     };
 }

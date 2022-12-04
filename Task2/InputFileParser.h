@@ -7,6 +7,6 @@
 namespace lifeConway {
     class InputFileParser {
     public:
-        Field pars(char* inputFileName);
+        Field pars(std::istream &inputStream);
     };
 }
