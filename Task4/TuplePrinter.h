@@ -18,6 +18,8 @@ namespace {
         void print<0>(std::basic_ostream<Ch, Tr> &os, const std::tuple<Args...> &t){
             os << std::get<sizeof...(Args) - 1>(t) << ' ';
         }
+
+        virtual ~TuplePrinter() = default;
     };
 }
 
