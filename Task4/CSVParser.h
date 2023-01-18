@@ -142,11 +142,9 @@ namespace parser {
     private:
         template<int n>
         class LineParser {
-        public:
-            void pars(std::tuple<Args...> &t, const std::string &line, int curPos, const char &delimiter,
-                      const char &shielding) {
-                std::string parsedString, preParsedString;
-                int nextDelimiterPosition;
+            std::string processDelimiters(const std::string &line, int curPos, char delimiter,
+                                          char shield, int &nextDelimiterPosition){
+                std::string preParsedString;
                 while (true) {
                     nextDelimiterPosition = line.find(delimiter, curPos);
                     if (nextDelimiterPosition == std::string::npos)
@@ -154,16 +152,20 @@ namespace parser {
                     preParsedString += line.substr(curPos, nextDelimiterPosition - curPos);
                     int k = 0;
                     for (int i = preParsedString.size() - 1; i >= 0; --i) {
-                        if (preParsedString[i] == shielding) k += 1;
+                        if (preParsedString[i] == shield) k += 1;
                         else break;
                     }
                     if (k % 2 == 0) break;
                     preParsedString += delimiter;
                     curPos = nextDelimiterPosition + 1;
                 }
+                return preParsedString;
+            }
 
+            std::string processShields(const std::string &preParsedString, char shield){
+                std::string parsedString;
                 for (int i = 0; i < preParsedString.size(); ++i) {
-                    int nextShieldingPosition = preParsedString.find(shielding, i);
+                    int nextShieldingPosition = preParsedString.find(shield, i);
                     if (nextShieldingPosition == std::string::npos) {
                         parsedString += preParsedString.substr(i, preParsedString.size() - i);
                         break;
@@ -173,26 +175,37 @@ namespace parser {
                     i = nextShieldingPosition + 2;
 
                 }
+                return parsedString;
+            }
+        public:
+            void pars(std::tuple<Args...> &t, const std::string &line, int curPos, char delimiter,
+                      char shield) {
+                std::string parsedString, preParsedString;
+                int nextDelimiterPosition;
+
+                preParsedString = processDelimiters(line, curPos, delimiter, shield, nextDelimiterPosition);
+
+
+                parsedString = processShields(preParsedString, shield);
+
                 std::stringstream stringstream(parsedString);
 
                 if ((stringstream >> std::get<sizeof...(Args) - n>(t)).rdbuf()->in_avail() != 0) {
-                    throw std::invalid_argument("can't read " + std::to_string(n) + " column");
+                    throw std::invalid_argument("can't read " + std::to_string(sizeof...(Args) - n + 1) + " column");
                 }
 
 
                 curPos = nextDelimiterPosition + 1;
                 LineParser<n - 1> parser;
-                parser.pars(t, line, curPos, delimiter, shielding);
+                parser.pars(t, line, curPos, delimiter, shield);
             }
         };
 
         template<>
         class LineParser<1> {
-        public:
-            void pars(std::tuple<Args...> &t, const std::string &line, int curPos, const char &delimiter,
-                      const char &shielding) {
-                std::string parsedString, preParsedString;
-                int nextDelimiterPosition;
+            std::string processDelimiters(const std::string &line, int curPos, char delimiter,
+                                          char shield, int &nextDelimiterPosition){
+                std::string preParsedString;
                 while (true) {
                     nextDelimiterPosition = line.find(delimiter, curPos);
                     if (nextDelimiterPosition == std::string::npos) {
@@ -202,16 +215,20 @@ namespace parser {
                     preParsedString += line.substr(curPos, nextDelimiterPosition - curPos);
                     int k = 0;
                     for (int i = preParsedString.size() - 1; i >= 0; --i) {
-                        if (preParsedString[i] == shielding) k += 1;
+                        if (preParsedString[i] == shield) k += 1;
                         else break;
                     }
                     if (k % 2 == 0) throw std::invalid_argument("can't read" + std::to_string(sizeof...(Args)) + "column");
                     preParsedString += delimiter;
                     curPos = nextDelimiterPosition + 1;
                 }
+                return preParsedString;
+            }
 
+            std::string processShields(const std::string &preParsedString, char shield){
+                std::string parsedString;
                 for (int i = 0; i < preParsedString.size(); ++i) {
-                    int nextShieldingPosition = preParsedString.find(shielding, i);
+                    int nextShieldingPosition = preParsedString.find(shield, i);
                     if (nextShieldingPosition == std::string::npos) {
                         parsedString += preParsedString.substr(i, preParsedString.size() - i);
                         break;
@@ -221,6 +238,18 @@ namespace parser {
                     i = nextShieldingPosition + 2;
 
                 }
+                return parsedString;
+            }
+
+        public:
+            void pars(std::tuple<Args...> &t, const std::string &line, int curPos, char delimiter,
+                      char shield) {
+                std::string parsedString, preParsedString;
+                int nextDelimiterPosition;
+
+                preParsedString = processDelimiters(line, curPos, delimiter, shield, nextDelimiterPosition);
+
+                parsedString = processShields(preParsedString, shield);
                 std::stringstream stringstream(parsedString);
 
                 if ((stringstream >> std::get<sizeof...(Args) - 1>(t)).rdbuf()->in_avail() != 0) {
