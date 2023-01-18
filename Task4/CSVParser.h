@@ -21,7 +21,7 @@ namespace parser {
     public:
         CSVParser(std::istream &istream, int offset) : columnsDelimiter(StandardColumnsDelimiter),
                                                        linesDelimiter(StandardLinesDelimiter),
-                                                       shielding(StandardShielding), istream1(istream),
+                                                       shield(StandardShielding), istream1(istream),
                                                        offset(offset) {}
 
         void setOptions(const char &columnsDelimiter = StandardColumnsDelimiter,
@@ -29,7 +29,7 @@ namespace parser {
                         const char &shielding = StandardShielding) {
             this->columnsDelimiter = columnsDelimiter;
             this->linesDelimiter = linesDelimiter;
-            this->shielding = shielding;
+            this->shield = shielding;
 
         }
 
@@ -41,7 +41,7 @@ namespace parser {
                 std::getline(istream1, stringBuff2, linesDelimiter);
                 int k = 0;
                 for (int i = stringBuff2.size() - 1; i > 0; --i) {
-                    if (stringBuff2[i] == shielding) k += 1;
+                    if (stringBuff2[i] == shield) k += 1;
                     else break;
                 }
                 stringBuff1 += stringBuff2;
@@ -52,7 +52,7 @@ namespace parser {
             else if (istream1.eof()) return false;
 
             LineParser<sizeof...(Args)> parser;
-            parser.pars(tuple, stringBuff1, 0, columnsDelimiter, shielding);
+            parser.pars(tuple, stringBuff1, 0, columnsDelimiter, shield);
 
             return true;
         }
@@ -64,7 +64,7 @@ namespace parser {
                     std::getline(istream1, stringBuff2, linesDelimiter);
                     int k = 0;
                     for (int j = stringBuff2.size() - 1; j > 0; --j) {
-                        if (stringBuff2[j] == shielding) k += 1;
+                        if (stringBuff2[j] == shield) k += 1;
                         else break;
                     }
                     if (k % 2 != 0) break;
@@ -262,7 +262,7 @@ namespace parser {
 
         char columnsDelimiter;
         char linesDelimiter;
-        char shielding;
+        char shield;
         std::istream &istream1;
         int offset;
     };
