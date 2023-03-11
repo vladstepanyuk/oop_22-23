@@ -1,4 +1,5 @@
 
+#include <vector>
 #include "Printer.h"
 
 namespace {
@@ -33,32 +34,16 @@ namespace soundProcessor {
         if (!outStream.write(&str[0], N % StandardStringBuffer).good()) throw std::exception("cant write");
     }
 
-//    void Printer::printSample(std::ostream &output, short sample) {
-//        static int one = static_cast<int>(oneByte);
-//        for (int i = 0; i < ShortIntSize; ++i) {
-//            int byte = (sample & (one << BitsPerByte * (i))) >> BitsPerByte * i;
-//            if (output.put(byte).bad()) throw std::exception("error");
-//        }
-//    }
-
-//    void Printer::printInt(std::ostream &output, int num) {
-//        static int one = static_cast<int>(oneByte);
-//        for (int i = 0; i < IntSize; ++i) {
-//            int byte = (num & (one << 8 * (i))) >> 8 * i;
-//            output.put(byte);
-//        }
-//    }
-
     void Printer::printChunckId(std::ostream &output, const std::string &chunckId) {
         output << chunckId;
     }
 
     void Printer::printNCharacters(std::ostream &outStream, int N, char character) {
-        std::string str(1024, character);
-        for (int i = 0; i < N / 1024; ++i) {
-            if (!outStream.write(&str[0], 1024).good()) throw std::exception("cant write");
+        std::string str(StandardStringBuffer, character);
+        for (int i = 0; i < N / StandardStringBuffer; ++i) {
+            if (!outStream.write(&str[0], StandardStringBuffer).good()) throw std::exception("cant write");
         }
-        if (!outStream.write(&str[0], N % 1024).good()) throw std::exception("cant write");
+        if (!outStream.write(&str[0], N % StandardStringBuffer).good()) throw std::exception("cant write");
     }
 
     void Printer::printNByteInt(std::ostream &output, unsigned long long int num, int N) {
@@ -67,6 +52,15 @@ namespace soundProcessor {
             int byte = (num & (one << BitsPerByte * (i))) >> BitsPerByte * i;
             output.put(byte);
         }
+    }
+
+    void Printer::printNSamples(std::ostream &outputStream, const std::vector<short int>& sampleBuff, int N) {
+        std::string stringBuff(N*ShortIntSize, 0);
+        for (int i = 0; i < N; ++i) {
+            static auto one = static_cast<unsigned long long>(oneByte);
+            for (int j = 0; j < ShortIntSize; ++j) stringBuff[i*ShortIntSize + j] = (sampleBuff[i] & (one << BitsPerByte * (j))) >> BitsPerByte * j;
+        }
+        if (outputStream.write(&stringBuff[0], N*ShortIntSize).bad()) throw std::exception("can't write");
     }
 
 
