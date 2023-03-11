@@ -12,8 +12,6 @@ int main(int argc, char **argv) {
     try {
         soundProcessor::ProgramContext context(argc, argv);
 
-//        soundProcessor::MuteConverter converter;
-//        converter.convert({10, 30},context, *context.returnInputStream(0),*context.returnOutputStream());
         soundProcessor::SoundProcessor processor;
         processor.makeTransformations(context);
     } catch (const std::exception &exception) {

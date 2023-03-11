@@ -10,6 +10,8 @@ namespace soundProcessor {
 
         void printNBytesFromIntoOut(std::istream &inputStream, std::ostream &outStream, int N);
 
+        void printNSamples(std::ostream &outputStream, const std::vector<short int>& sampleBuff, int N);
+
 //        void printSample(std::ostream &output, short int sample);
 //
 //        void printInt(std::ostream &output, int num);
