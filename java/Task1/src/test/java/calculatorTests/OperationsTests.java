@@ -9,7 +9,7 @@ import calculator.operations.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
+import org.junit.jupiter.params.provider.EnumSource;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -48,9 +48,8 @@ public class OperationsTests {
     }
 
     @ParameterizedTest(name = "{index}  {0} test")
-    @ValueSource(strings = {"/", "*", "+", "-", "Sqrt"})
-    void NumberOperationsTests(String opName) throws OperationException, PeekException, PopException {
-        OperationIds id = OperationIds.getIdByName(opName);
+    @EnumSource(value = OperationIds.class, names = {"DIVISION", "MULTIPLY", "SUM", "SUBTRACTION", "SQRT"})
+    void NumberOperationsTests(OperationIds id) throws OperationException, PeekException, PopException {
         assertThatThrownBy(()->{
             Operation op = FactoryOperations.make(id);
             op.exec(context, null);
@@ -64,12 +63,12 @@ public class OperationsTests {
         context.push(2);
         Operation op = FactoryOperations.make(id);
         op.exec(context, null);
-        switch (opName) {
-            case "/" -> assertThat(context.peek()).isEqualTo(2.0 / 4.0);
-            case "*" -> assertThat(context.peek()).isEqualTo(2.0 * 4.0);
-            case "+" -> assertThat(context.peek()).isEqualTo(2.0 + 4.0);
-            case "-" -> assertThat(context.peek()).isEqualTo(2.0 - 4.0);
-            case "Sqrt" -> assertThat(context.peek()).isEqualTo(Math.sqrt(2.0));
+        switch (id) {
+            case DIVISION -> assertThat(context.peek()).isEqualTo(2.0 / 4.0);
+            case MULTIPLY -> assertThat(context.peek()).isEqualTo(2.0 * 4.0);
+            case SUM -> assertThat(context.peek()).isEqualTo(2.0 + 4.0);
+            case SUBTRACTION -> assertThat(context.peek()).isEqualTo(2.0 - 4.0);
+            case SQRT -> assertThat(context.peek()).isEqualTo(Math.sqrt(2.0));
         }
 
         while (!context.stackIsEmpty()) context.pop();
