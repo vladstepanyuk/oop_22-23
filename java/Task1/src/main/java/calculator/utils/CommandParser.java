@@ -4,11 +4,15 @@ import calculator.exception.operation.NoSuchOperationException;
 import calculator.exception.parser.ArgsNumberException;
 import calculator.exception.parser.ParserException;
 import calculator.operations.OperationIds;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class CommandParser {
     private static final String SPACE = " ";
+    static Logger logger = LogManager.getLogger(CommandParser.class.getName());
 
     public static Command pars(String str) throws ParserException {
+        logger.info("parsing line");
         int index = str.indexOf(SPACE);
         String comName;
         OperationIds commId;

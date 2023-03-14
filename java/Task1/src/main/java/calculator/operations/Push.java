@@ -5,11 +5,16 @@ import calculator.exception.operation.ArgsNumberException;
 import calculator.exception.operation.OperationException;
 import calculator.exception.operation.VariableException;
 import calculator.utils.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class Push implements Operation {
+    static final Logger logger = LogManager.getLogger(Push.class.getName());
     private static final int VARIABLE_ARGC = 0;
     @Override
     public void exec(ProgramContext context, String[] args) throws OperationException {
+        logger.info("executing operation");
+
         if (args.length != 1) {
             throw new ArgsNumberException();
         } else if (StringUtils.isNumeric(args[VARIABLE_ARGC])) {
