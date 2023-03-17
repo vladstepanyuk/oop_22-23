@@ -51,7 +51,7 @@ public class StackCalculatorFromFile implements Calculator {
             logger.error("unable to read " + fileName);
             throw new CalculatorException("unable to read file", e);
         } catch (Exception e) {
-            logger.error("error in " + linesNumber +" line");
+            logger.error("error in " + linesNumber +" line: " + e.getLocalizedMessage());
             throw new CalculatorException("error in " + linesNumber +" line", e);
         }
 
