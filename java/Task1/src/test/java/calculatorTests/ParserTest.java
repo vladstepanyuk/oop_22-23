@@ -3,6 +3,7 @@ package calculatorTests;
 import calculator.exception.operation.NoSuchOperationException;
 import calculator.exception.parser.ArgsNumberException;
 import calculator.exception.parser.ParserException;
+import calculator.factory.FactoryOperations;
 import calculator.operations.OperationIds;
 import calculator.utils.Command;
 import calculator.utils.CommandParser;
@@ -10,10 +11,24 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class ParserTest {
+
+    static {
+        try {
+            FileInputStream in = new FileInputStream("src/main/resources/configuration.txt");
+            FactoryOperations.getResourceAsStream(in);
+            in.close();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+    }
 
     @DisplayName("Parsing invalid operation test")
     @Test
@@ -30,19 +45,19 @@ public class ParserTest {
     @DisplayName("Parsing Push operation test")
     @Test
     void PushTest() throws ParserException {
-        String pushString = "Push a";
+        String pushString = "PUSH a";
         Command comm = CommandParser.pars(pushString);
         assertThat(comm.getArgs()).isEqualTo(new String[]{"a"});
         assertThat(comm.getId()).isEqualTo(OperationIds.PUSH);
 
         assertThatThrownBy(() ->{
-            CommandParser.pars("Push bhbfdj;h dlghdkjgh");
+            CommandParser.pars("PUSH bhbfdj;h dlghdkjgh");
         })
                 .isInstanceOf(ArgsNumberException.class)
                 .hasMessageContaining("wrong args number");
 
         assertThatThrownBy(() ->{
-            CommandParser.pars("Push");
+            CommandParser.pars("PUSH");
         })
                 .isInstanceOf(ArgsNumberException.class)
                 .hasMessageContaining("wrong args number");
@@ -52,19 +67,19 @@ public class ParserTest {
     @DisplayName("Parsing Define operation test")
     @Test
     void DefineTest() throws ParserException {
-        String defineString = "Define a 4";
+        String defineString = "DEFINE a 4";
         Command comm = CommandParser.pars(defineString);
         assertThat(comm.getArgs()).isEqualTo(new String[]{"a", "4"});
         assertThat(comm.getId()).isEqualTo(OperationIds.DEFINE);
 
         assertThatThrownBy(() ->{
-            CommandParser.pars("Define a");
+            CommandParser.pars("DEFINE a");
         })
                 .isInstanceOf(ArgsNumberException.class)
                 .hasMessageContaining("wrong args number");
 
         assertThatThrownBy(() ->{
-            CommandParser.pars("Define a a a");
+            CommandParser.pars("DEFINE a a a");
         })
                 .isInstanceOf(ArgsNumberException.class)
                 .hasMessageContaining("wrong args number");

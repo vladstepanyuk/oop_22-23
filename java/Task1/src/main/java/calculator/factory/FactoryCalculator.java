@@ -1,11 +1,12 @@
 package calculator.factory;
 
 import calculator.Calculator;
+import calculator.exception.CalculatorException;
 import calculator.stackcalculator.StackCalculatorFromFile;
 import calculator.stackcalculator.StackCalculatorFromTerminal;
 
 public class FactoryCalculator {
-    public static Calculator make(String[] args) {
+    public static Calculator make(String[] args) throws CalculatorException {
         if (args == null) {
             throw new NullPointerException();
         } else if (args.length == 0) {

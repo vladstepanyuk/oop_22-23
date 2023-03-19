@@ -24,18 +24,18 @@ public class CommandParser {
         }
 
         try {
-            commId = OperationIds.getIdByName(comName);
-        } catch (NoSuchOperationException e) {
-            throw new ParserException("parser error", e);
+            commId = OperationIds.valueOf(comName);
+        } catch (IllegalArgumentException e){
+            throw new ParserException("parser error", new NoSuchOperationException(comName));
         }
 
-        if (comName.equals(OperationIds.PUSH.getName())) {
+        if (comName.equals(OperationIds.PUSH.name())) {
             if (index == -1) throw new ArgsNumberException();
             String substring = str.substring(index + 1);
             if (substring.contains(SPACE)) throw new ArgsNumberException();
             String[] args = {substring};
             return new Command(OperationIds.PUSH, args);
-        } else if (comName.equals(OperationIds.DEFINE.getName())) {
+        } else if (comName.equals(OperationIds.DEFINE.name())) {
             if (index == -1) throw new ArgsNumberException();
             int index2 = str.indexOf(SPACE, index + 1);
             if (index2 == -1) throw new ArgsNumberException();

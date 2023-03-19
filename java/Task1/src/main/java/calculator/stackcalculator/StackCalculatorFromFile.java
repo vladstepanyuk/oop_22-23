@@ -14,12 +14,21 @@ import org.apache.logging.log4j.Logger;
 import java.io.*;
 
 public class StackCalculatorFromFile implements Calculator {
+    private static final String configFileName = "src/main/resources/configuration.txt";
+
     String fileName;
     ProgramContext context;
     Logger logger = LogManager.getLogger(StackCalculatorFromFile.class.getName());
 
-    public StackCalculatorFromFile(String fileName) {
+    public StackCalculatorFromFile(String fileName) throws CalculatorException {
         logger.info("initializing calculator data");
+        try {
+            FileInputStream inputStream = new FileInputStream(configFileName);
+            FactoryOperations.getResourceAsStream(inputStream);
+        } catch (Exception e) {
+            throw new CalculatorException("unable to configure calculator", e);
+        }
+
         if (fileName == null) {
             throw new NullPointerException();
         }

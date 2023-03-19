@@ -2,6 +2,7 @@ package calculatorTests;
 
 
 import calculator.context.ProgramContext;
+import calculator.exception.factory.FactoryException;
 import calculator.exception.operation.*;
 import calculator.exception.context.*;
 import calculator.factory.FactoryOperations;
@@ -10,6 +11,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
+
+import java.io.FileInputStream;
+import java.io.IOException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -49,14 +53,17 @@ public class OperationsTests {
 
     @ParameterizedTest(name = "{index}  {0} test")
     @EnumSource(value = OperationIds.class, names = {"DIVISION", "MULTIPLY", "SUM", "SUBTRACTION", "SQRT"})
-    void NumberOperationsTests(OperationIds id) throws OperationException, PeekException, PopException {
+    void NumberOperationsTests(OperationIds id) throws OperationException, PeekException, PopException, FactoryException, IOException {
+        FileInputStream in = new FileInputStream("src/main/resources/configuration.txt");
+        FactoryOperations.getResourceAsStream(in);
+        in.close();
         assertThatThrownBy(()->{
             Operation op = FactoryOperations.make(id);
             op.exec(context, null);
         })
                 .isInstanceOf(ExecuteException.class)
                 .hasCause(new PopException("stack is empty"))
-                .hasMessageContaining("unable to execute "+ id.getName());
+                .hasMessageContaining("unable to execute "+ id.name());
 
 
         context.push(4);

@@ -10,13 +10,21 @@ import calculator.utils.CommandParser;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.FileInputStream;
 import java.util.Scanner;
 
 public class StackCalculatorFromTerminal implements Calculator {
+    private static final String configFileName = "src/main/resources/configuration.txt";
     ProgramContext context;
 
-    public StackCalculatorFromTerminal(){
+    public StackCalculatorFromTerminal() throws CalculatorException {
         logger.info("initializing calculator data");
+        try {
+            FileInputStream inputStream = new FileInputStream(configFileName);
+            FactoryOperations.getResourceAsStream(inputStream);
+        } catch (Exception e) {
+            throw new CalculatorException("unable to configure calculator", e);
+        }
         context = new ProgramContext();
     }
 
