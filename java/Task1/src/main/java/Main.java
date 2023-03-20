@@ -9,7 +9,6 @@ public class Main {
             assert calculator != null;
             calculator.doCalculation();
         } catch (CalculatorException e){
-            System.err.print(e.getMessage());
             e.printStackTrace();
         }
 
