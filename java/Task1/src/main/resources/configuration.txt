@@ -1,0 +1,9 @@
+DEFINE calculator.operations.Define
+DIVISION calculator.operations.Division
+MULTIPLY calculator.operations.Multiply
+POP calculator.operations.Pop
+PRINT calculator.operations.Print
+PUSH calculator.operations.Push
+SQRT calculator.operations.Sqrt
+SUBTRACTION calculator.operations.Subtraction
+SUM calculator.operations.Sum
