@@ -6,7 +6,12 @@ public class MyTextField extends JTextField {
     private static final int FIELD_WIDTH = 10;
 
 
-    TextFieldType type;
+    private TextFieldType type;
+
+    public void setType(TextFieldType type) {
+        this.type = type;
+    }
+
     public enum TextFieldType {
         LINES_LENGTH,
         COLUMN_LENGTH,
@@ -18,7 +23,7 @@ public class MyTextField extends JTextField {
     }
     public MyTextField(TextFieldType t, Listener listener) {
         super(FIELD_WIDTH);
-        type = t;
+        setType(t);
         addActionListener(listener);
     }
 

@@ -28,8 +28,8 @@ public class Command {
 
     }
 
-    CommandIds id;
-    int[] args;
+    private CommandIds id;
+    private int[] args;
 
 
     public Command(CommandIds id, int[] args) {

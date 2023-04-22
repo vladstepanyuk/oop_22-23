@@ -6,10 +6,10 @@ import java.util.Arrays;
 
 public class DisplayedField {
 
-    final char emptyCell = 9643;
-    final char BOOM = 0x80;
-    final char flag = '☼';
-    char[][] displayedField;
+    private final char emptyCell = 9643;
+    private final char BOOM = 0x80;
+    private final char flag = '☼';
+    private char[][] displayedField;
 
     public DisplayedField(int lineLength, int columnLength) {
         displayedField = new char[columnLength][lineLength];

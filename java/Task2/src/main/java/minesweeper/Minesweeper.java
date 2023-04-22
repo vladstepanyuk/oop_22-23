@@ -1,6 +1,5 @@
 package minesweeper;
 
-import com.sun.scenario.effect.impl.sw.java.JSWColorAdjustPeer;
 import minesweeper.config.Configuration;
 import minesweeper.exception.MinesweeperException;
 import minesweeper.exception.field.IndexesOutOfBoundException;
@@ -13,14 +12,14 @@ import java.util.Arrays;
 public class Minesweeper {
     public static final int NOT_OPENED = 9;
     public static final int FLAG = 10;
-    Configuration configuration;
-    Field field;
-    boolean isFirstClick = true;
+    private Configuration configuration;
+    private Field field;
+    private boolean isFirstClick = true;
 
-    long startTime = 0;
-    long endTime = 0;
+    private long startTime = 0;
+    private long endTime = 0;
 
-    Pair[] recordsTable;
+    private Pair[] recordsTable;
 
     private static final int recordsTableSize = 10;
 
@@ -28,7 +27,7 @@ public class Minesweeper {
         return minesAround;
     }
 
-    int[][] minesAround;
+    private int[][] minesAround;
 
     public Minesweeper() {
         recordsTable = new Pair[recordsTableSize];
@@ -109,7 +108,7 @@ public class Minesweeper {
     public boolean flag(int x, int y) throws MinesweeperException {
         if (isFirstClick) generateField(x, y);
 
-        if (field.getUsedFlags() == field.configuration.getMinesNumber()) throw new UsedAllFlagsException();
+        if (field.getUsedFlags() == field.getConfiguration().getMinesNumber()) throw new UsedAllFlagsException();
         int res = field.flag(x, y);
         isFirstClick = res == 0;
         minesAround[x][y] = FLAG;

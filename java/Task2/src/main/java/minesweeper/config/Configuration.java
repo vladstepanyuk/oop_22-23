@@ -3,9 +3,9 @@ package minesweeper.config;
 import minesweeper.exception.config.ConfigurationException;
 
 public class Configuration {
-    int columnLength = 9;
-    int lineLength = 9;
-    int minesNumber = 10;
+    private int columnLength = 9;
+    private int lineLength = 9;
+    private int minesNumber = 10;
 
 
 

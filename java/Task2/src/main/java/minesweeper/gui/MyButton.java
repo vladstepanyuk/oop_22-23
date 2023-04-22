@@ -3,11 +3,12 @@ package minesweeper.gui;
 import javax.swing.*;
 
 public class MyButton extends JButton {
-    int line, column;
+    private int line;
+    private int column;
 
 
 
-    boolean isFlag;
+    private boolean isFlag;
 
     public boolean isFlag() {
         return isFlag;

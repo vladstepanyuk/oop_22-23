@@ -16,14 +16,14 @@ import java.util.Scanner;
 import static minesweeper.utils.CommandParser.SPACE;
 
 public class TextInterface {
-    DisplayedField displayedField;
+    private DisplayedField displayedField;
 
     private static final String YES_ANSWER = "y";
     private static final String NO_ANSWER = "n";
     private static final String CLEAR = "\033[H\033[J";
 
 
-    Minesweeper game;
+    private Minesweeper game;
     public TextInterface() {
         this.game = new Minesweeper();
     }

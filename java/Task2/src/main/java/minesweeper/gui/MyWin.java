@@ -17,7 +17,7 @@ public class MyWin extends JFrame {
         return curPanel;
     }
 
-    JPanel curPanel, prevPanel;
+    JPanel curPanel;
     Listener listener;
     public MyWin(Minesweeper game) {
         standardPanel = new JPanel(new BorderLayout());
@@ -32,13 +32,6 @@ public class MyWin extends JFrame {
     public  void openSettings() {
         new SettingsPanel(listener);
 
-    }
-
-    public  void goBack() {
-        standardPanel.removeAll();
-        curPanel = prevPanel;
-        standardPanel.add(curPanel);
-        standardPanel.updateUI();
     }
 
     public void showRecordTable(){

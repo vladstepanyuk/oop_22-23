@@ -9,15 +9,15 @@ import minesweeper.exception.game.GameLogicException;
 public class Field {
 
 
-    Configuration configuration;
-    boolean[][] fieldIsMine;
-    boolean[][] fieldIsOpen;
-    boolean[][] fieldIsFlag;
-    int[][] minesAroundNumber;
+    private Configuration configuration;
+    private boolean[][] fieldIsMine;
+    private boolean[][] fieldIsOpen;
+    private boolean[][] fieldIsFlag;
+    private int[][] minesAroundNumber;
 
-    int unFlaggedMines;
+    private int unFlaggedMines;
 
-    int usedFlags;
+    private int usedFlags;
 
     public int getUsedFlags() {
         return usedFlags;

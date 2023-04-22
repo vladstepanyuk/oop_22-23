@@ -1,8 +1,8 @@
 package minesweeper.utils;
 
 public class Pair {
-    String first;
-    double second;
+    private String first;
+    private double second;
 
     public static final double EMPTY = -1;
 

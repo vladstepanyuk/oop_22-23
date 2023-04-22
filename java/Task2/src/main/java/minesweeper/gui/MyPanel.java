@@ -22,17 +22,17 @@ public class MyPanel extends JPanel {
     private static final int DELAY = 100;
     private static final int PERIOD = 100;
 
-    JPanel minesPanel;
-    Context context;
-    Listener listener;
-    MyButton[][] buttons;
-    static HashMap<Integer, BufferedImage> numberImageMap;
+    private JPanel minesPanel;
+    private Context context;
+    private Listener listener;
+    private MyButton[][] buttons;
+    private static HashMap<Integer, BufferedImage> numberImageMap;
 
-    JPanel curPanel;
-    JPanel prevPanel;
+    private JPanel curPanel;
+    private JPanel prevPanel;
 
-    JTextField timerField;
-    Timer timer;
+    private JTextField timerField;
+    private Timer timer;
 
     static {
         try {

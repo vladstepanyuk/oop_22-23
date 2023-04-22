@@ -7,7 +7,7 @@ public class Context {
         return game;
     }
 
-    Minesweeper game;
+    private Minesweeper game;
 
     public boolean isClick() {
         return isClick;
@@ -17,7 +17,7 @@ public class Context {
         isClick = click;
     }
 
-    boolean isClick;
+    private boolean isClick;
 
 
     public Context(Minesweeper game, boolean isClick){

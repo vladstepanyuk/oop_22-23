@@ -10,17 +10,17 @@ import java.awt.event.ActionListener;
 import static minesweeper.Field.*;
 
 public class Listener implements ActionListener {
-    MyWin win;
-    Context context;
+    private MyWin win;
+    private Context context;
 
-    int tmpLinesNumber;
-    int tmpColumnsNumber;
-    int tmpMinesNumber;
-    String Name;
+    private int tmpLinesNumber;
+    private int tmpColumnsNumber;
+    private int tmpMinesNumber;
+    private String Name;
 
 
-    boolean isClick = true;
-    boolean needToRestart = false;
+    private boolean isClick = true;
+    private boolean needToRestart = false;
 
     public Listener(MyWin win, Context context1) {
         this.win = win;
@@ -58,7 +58,7 @@ public class Listener implements ActionListener {
                     if (WinPanel.winPanel(this, context.getGame().getTime()) == JOptionPane.OK_OPTION){
                         context.getGame().updateRecord(new Pair(Name, context.getGame().getTime()));
                     }
-                    context.game.restartGame();
+                    context.getGame().restartGame();
                     needToRestart = false;
                     ((MyPanel) win.getCurPanel()).updatePanel();
                 }
@@ -77,7 +77,7 @@ public class Listener implements ActionListener {
             } else if (e.getSource().getClass().equals(JButton.class)) {
                 if (((JButton) e.getSource()).getText().equals("flag")) isClick = !isClick;
                 else if (((JButton) e.getSource()).getText().equals("restart")) {
-                    context.game.restartGame();
+                    context.getGame().restartGame();
                     needToRestart = false;
                     ((MyPanel) win.getCurPanel()).updatePanel();
                 } else if (((JButton) e.getSource()).getText().equals("settings")) {
