@@ -15,7 +15,7 @@ public class MyWin extends JFrame {
 
 
 
-    private JPanel curPanel;
+    private final JPanel curPanel;
 
     public MyWin(Minesweeper game) {
 
