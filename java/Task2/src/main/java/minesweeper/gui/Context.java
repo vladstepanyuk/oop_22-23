@@ -3,11 +3,14 @@ package minesweeper.gui;
 import minesweeper.Minesweeper;
 
 public class Context {
-    public Minesweeper getGame() {
-        return game;
-    }
 
-    private Minesweeper game;
+    private final MyWin win;
+
+
+    private final Minesweeper game;
+    private boolean isClick = true;
+
+    private boolean needToRestart = false;
 
     public boolean isClick() {
         return isClick;
@@ -17,11 +20,26 @@ public class Context {
         isClick = click;
     }
 
-    private boolean isClick;
+
+    public Minesweeper getGame() {
+        return game;
+    }
 
 
-    public Context(Minesweeper game, boolean isClick){
+    public Context(Minesweeper game, MyWin win){
         this.game = game;
-        this.isClick = isClick;
+        this.win = win;
+    }
+
+    public boolean isNeedToRestart() {
+        return needToRestart;
+    }
+
+    public void setNeedToRestart(boolean needToRestart) {
+        this.needToRestart = needToRestart;
+    }
+
+    public MyWin getWin() {
+        return win;
     }
 }

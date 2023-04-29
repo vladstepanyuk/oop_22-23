@@ -1,6 +1,7 @@
 package minesweeper.gui;
 
 import minesweeper.Minesweeper;
+import minesweeper.exception.MinesweeperException;
 
 import java.awt.*;
 import javax.swing.*;
@@ -10,27 +11,26 @@ import javax.swing.*;
  *
  */
 public class MyWin extends JFrame {
-    Context context;
-    JPanel standardPanel;
+    private final Context context;
 
-    public JPanel getCurPanel() {
-        return curPanel;
-    }
 
-    JPanel curPanel;
-    Listener listener;
+
+    private JPanel curPanel;
+
     public MyWin(Minesweeper game) {
-        standardPanel = new JPanel(new BorderLayout());
+
+        JPanel standardPanel = new JPanel(new BorderLayout());
         add(standardPanel);
-        context = new Context(game, true);
-        listener = new Listener(this, context);
-        curPanel = new MyPanel(context, listener);
+        context = new Context(game, this);
+        curPanel = new GamePanel(context);
         standardPanel.add(curPanel);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
-    public  void openSettings() {
-        new SettingsPanel(listener);
+
+
+    public  void openSettings() throws MinesweeperException {
+        new SettingsPanel(context);
 
     }
 
@@ -38,5 +38,7 @@ public class MyWin extends JFrame {
         new RecordPanel(context.getGame().getRecordsTable());
     }
 
-
+    public JPanel getCurPanel() {
+        return curPanel;
+    }
 }
