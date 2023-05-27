@@ -5,7 +5,7 @@ import minesweeper.gui.Context;
 import javax.swing.*;
 
 public class MenuButtons extends JButton {
-    private static final int FIELD_WIDTH = 10;
+//    private static final int FIELD_WIDTH = 10;
 
 
     private MenuButtons.MenuButtonsType type;

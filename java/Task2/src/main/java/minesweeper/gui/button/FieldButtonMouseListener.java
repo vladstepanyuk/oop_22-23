@@ -36,7 +36,7 @@ public class FieldButtonMouseListener implements MouseListener {
             if (context.isNeedToRestart()) return;
             int x = ((FieldButton) e.getSource()).getLine();
             int y = ((FieldButton) e.getSource()).getColumn();
-            boolean isClick = context.isClick();
+//            boolean isClick = context.isClick();
             if (e.getButton() == MouseEvent.BUTTON1) {
                 click(x, y);
             } else {

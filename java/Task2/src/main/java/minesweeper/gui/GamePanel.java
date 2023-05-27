@@ -28,7 +28,7 @@ public class GamePanel extends JPanel {
     private FieldButton[][] buttons;
     private static final HashMap<Integer, BufferedImage> numberImageMap;
 
-    private JPanel curPanel;
+//    private JPanel curPanel;
 
     private final JTextField timerField;
 
@@ -56,7 +56,6 @@ public class GamePanel extends JPanel {
         JPanel jp = new JPanel();
         minesPanel = jp;
         jp.setLayout(new GridLayout(0, context.getGame().getLinesLength()));
-        JButton jb;
         int[][] field = context.getGame().getMinesAround();
         for (int i = 0; i < context.getGame().getColumnsLength(); i++) {
             for (int j = 0; j < context.getGame().getLinesLength(); j++) {
@@ -67,11 +66,6 @@ public class GamePanel extends JPanel {
 
         add(jp);
 
-        String[] items = {
-                "Restart",
-                "Record table",
-                "Settings"
-        };
 
         JMenuBar menuBar = new JMenuBar();
         menuBar.add(new Menu(context));
@@ -90,7 +84,6 @@ public class GamePanel extends JPanel {
         northPanel.add(timer);
         add(northPanel, BorderLayout.NORTH);
 
-        curPanel = minesPanel;
 
         Timer timer1 = new Timer();
         timer1.scheduleAtFixedRate(new CurrentTask(), DELAY, PERIOD);
@@ -117,7 +110,7 @@ public class GamePanel extends JPanel {
     public void updatePanel() {
         minesPanel.removeAll();
         minesPanel.setLayout(new GridLayout(0, context.getGame().getLinesLength()));
-        int[][] field = context.getGame().getMinesAround();
+//        int[][] field = context.getGame().getMinesAround();
         buttons = new FieldButton[context.getGame().getColumnsLength()][context.getGame().getLinesLength()];
         for (int i = 0; i < context.getGame().getColumnsLength(); i++) {
             for (int j = 0; j < context.getGame().getLinesLength(); j++) {
@@ -131,7 +124,7 @@ public class GamePanel extends JPanel {
     class CurrentTask extends TimerTask {
         @Override
         public void run() {
-            timerField.setText("" + (int) context.getGame().getTime());
+            timerField.setText(((Integer) (int) context.getGame().getTime()).toString());
         }
     }
 }

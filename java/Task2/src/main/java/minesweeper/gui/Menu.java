@@ -1,6 +1,5 @@
 package minesweeper.gui;
 
-import minesweeper.gui.button.MenuButtonsListener;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -8,35 +7,28 @@ import java.awt.event.ActionListener;
 
 public class Menu extends JMenu {
 
-    class MenuActionListener implements ActionListener {
-        Context context;
-        public MenuActionListener(Context context) {
-            this.context = context;
-        }
+    private record MenuActionListener(Context context) implements ActionListener {
 
         @Override
-        public void actionPerformed(ActionEvent e) {
-            var button = ((JMenuItem)e.getSource());
+            public void actionPerformed(ActionEvent e) {
+                var button = ((JMenuItem) e.getSource());
 
-            try {
-                switch (button.getText()) {
-                    case ("Новая игра") -> {
-                        context.getGame().restartGame();
-                        context.setNeedToRestart(false);
-                        ((GamePanel) context.getWin().getCurPanel()).updatePanel();
+                try {
+                    switch (button.getText()) {
+                        case ("Новая игра") -> {
+                            context.getGame().restartGame();
+                            context.setNeedToRestart(false);
+                            ((GamePanel) context.getWin().getCurPanel()).updatePanel();
+                        }
+                        case ("Настройки") -> context.getWin().openSettings();
+                        case ("Рекорды") -> context.getWin().showRecordTable();
                     }
-                    case ("Настройки") -> {
-                        context.getWin().openSettings();
-                    } case ("Рекорды") -> {
-                        context.getWin().showRecordTable();
-                    }
+                } catch (Exception exception) {
+                    JOptionPane.showMessageDialog(null, exception.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
                 }
-            } catch (Exception exception) {
-                JOptionPane.showMessageDialog(null, exception.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
-            }
 
+            }
         }
-    }
     Menu(Context context){
         super("Меню");
         JMenuItem newGame = new JMenuItem("Новая игра");

@@ -5,8 +5,8 @@ import minesweeper.gui.Context;
 import javax.swing.*;
 
 public class FieldButton extends JButton {
-    private int line;
-    private int column;
+    private final int line;
+    private final int column;
 
 
 
