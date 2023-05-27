@@ -56,7 +56,7 @@ public class GamePanel extends JPanel {
         JPanel jp = new JPanel();
         minesPanel = jp;
         jp.setLayout(new GridLayout(0, context.getGame().getLinesLength()));
-        int[][] field = context.getGame().getMinesAround();
+//        int[][] field = context.getGame().getMinesAround();
         for (int i = 0; i < context.getGame().getColumnsLength(); i++) {
             for (int j = 0; j < context.getGame().getLinesLength(); j++) {
                 buttons[i][j] = new FieldButton(i, j, context);
