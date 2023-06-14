@@ -4,6 +4,8 @@ import factory.Factory;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -16,11 +18,14 @@ public class MyWin extends JFrame {
     private static final int PERIOD = 100;
     private static final int MAX_DELAY = 1000;
     private static final int STAND_DELAY = 100;
-    JTextField CarsNumber;
-    JTextField CarBodyNumber;
-    JTextField EngineNumber;
-    JTextField AccessoryNumber;
-    JTextField CarsProduced;
+    private JTextField CarsNumber;
+    private JTextField CarBodyNumber;
+    private JTextField EngineNumber;
+    private JTextField AccessoryNumber;
+    private JTextField CarsProduced;
+    private JPanel standardPanel;
+
+    private JButton start_stop;
 
     private class Task extends TimerTask {
         @Override
@@ -29,45 +34,73 @@ public class MyWin extends JFrame {
             CarsNumber.setText("Cars number: " + factory.getCarsNumber());
             EngineNumber.setText("Engine number: " + factory.getEnginesNumber());
             CarBodyNumber.setText("Car body number: " + factory.getCarBodyNumber());
-            AccessoryNumber.setText("Accessory number: " + factory.getEnginesNumber());
+            AccessoryNumber.setText("Accessory number: " + factory.getAccessoryNumber());
 
+        }
+    }
+
+    private class StartStopButtonListener implements ActionListener {
+        boolean isRunning = false;
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if (!isRunning) {
+                start_stop.setText("stop");
+                start_stop.setBackground(Color.RED);
+                factory.start();
+            } else {
+                start_stop.setText("start");
+                start_stop.setBackground(Color.GREEN);
+                factory.stop();
+            }
+            isRunning = !isRunning;
+            standardPanel.updateUI();
         }
     }
 
     public MyWin(Factory factory) {
         this.factory = factory;
 
-        JPanel standardPanel = new JPanel(new GridLayout(0, 1));
-        add(standardPanel);
+        standardPanel = new JPanel(new BorderLayout());
+        JPanel northPanel = new JPanel();
+        start_stop = new JButton();
+        start_stop.setText("start");
+        start_stop.setBackground(Color.GREEN);
+        start_stop.addActionListener(new StartStopButtonListener());
+        northPanel.add(start_stop);
+
+        JPanel mainPanel = new JPanel(new GridLayout(0, 1));
+        add(mainPanel);
         CarsNumber = new JTextField();
         CarsNumber.setText("Cars number: " + factory.getCarsNumber());
         CarsNumber.setEditable(false);
         CarsNumber.setMaximumSize(new Dimension(10, 10));
         CarsNumber.setMinimumSize(new Dimension(10, 10));
+        mainPanel.add(CarsNumber);
         CarsProduced = new JTextField();
         CarsProduced.setText("Cars  produced number: " + factory.getTotalCarProduced());
         CarsProduced.setEditable(false);
         CarsProduced.setMaximumSize(new Dimension(10, 10));
         CarsProduced.setMinimumSize(new Dimension(10, 10));
-        standardPanel.add(CarsProduced);
+        mainPanel.add(CarsProduced);
         CarBodyNumber = new JTextField();
         CarBodyNumber.setText("Car body number: " + factory.getCarBodyNumber());
         CarBodyNumber.setEditable(false);
         CarBodyNumber.setMaximumSize(new Dimension(10, 10));
         CarBodyNumber.setMinimumSize(new Dimension(10, 10));
-        standardPanel.add(CarBodyNumber);
+        mainPanel.add(CarBodyNumber);
         AccessoryNumber = new JTextField();
         AccessoryNumber.setText("Accessory number: " + factory.getAccessoryNumber());
         AccessoryNumber.setEditable(false);
         AccessoryNumber.setMaximumSize(new Dimension(10, 10));
         AccessoryNumber.setMinimumSize(new Dimension(10, 10));
-        standardPanel.add(AccessoryNumber);
+        mainPanel.add(AccessoryNumber);
         EngineNumber = new JTextField();
         EngineNumber.setText("Engine number: " + factory.getEnginesNumber());
         EngineNumber.setEditable(false);
         EngineNumber.setMaximumSize(new Dimension(10, 10));
         EngineNumber.setMinimumSize(new Dimension(10, 10));
-        standardPanel.add(EngineNumber);
+        mainPanel.add(EngineNumber);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         JPanel sliderPanel = new JPanel(new GridLayout(0, 1));
@@ -85,7 +118,7 @@ public class MyWin extends JFrame {
 
         sliderPanel.add(DelayEngineSupplier);
 
-        standardPanel.add(sliderPanel);
+        mainPanel.add(sliderPanel);
 
         sliderPanel = new JPanel(new GridLayout(0, 1));
         sliderPanel.add(new JLabel("Accessory Supplier Delay"));
@@ -99,7 +132,7 @@ public class MyWin extends JFrame {
         DelayAccessorySupplier.setMinorTickSpacing(1);
         sliderPanel.add(DelayAccessorySupplier);
 
-        standardPanel.add(sliderPanel);
+        mainPanel.add(sliderPanel);
         sliderPanel = new JPanel(new GridLayout(0, 1));
         sliderPanel.add(new JLabel("Car body Supplier Delay"));
 
@@ -113,7 +146,7 @@ public class MyWin extends JFrame {
         CarBodySupplierDelay.setMinorTickSpacing(1);
         sliderPanel.add(CarBodySupplierDelay);
 
-        standardPanel.add(sliderPanel);
+        mainPanel.add(sliderPanel);
         sliderPanel = new JPanel(new GridLayout(0, 1));
         sliderPanel.add(new JLabel("Dealer  Delay"));
 
@@ -128,9 +161,11 @@ public class MyWin extends JFrame {
 
         java.util.Timer timer1 = new Timer();
         timer1.scheduleAtFixedRate(new Task(), MIN_DELAY, PERIOD);
-        factory.start();
+        standardPanel.add(northPanel, BorderLayout.NORTH);
+        standardPanel.add(mainPanel, BorderLayout.CENTER);
+        add(standardPanel);
 
-        standardPanel.add(sliderPanel);
+        mainPanel.add(sliderPanel);
     }
 
 

@@ -33,9 +33,6 @@ public class WorkShop {
         workersThreadPool = Executors.newFixedThreadPool(size);
     }
 
-    public void stop() {
-        workersThreadPool.shutdown();
-    }
 
     public int getTotalCarProduced() {
         return totalCarsProduced.get();

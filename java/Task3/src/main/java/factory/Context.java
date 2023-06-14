@@ -37,6 +37,8 @@ public class Context {
 
                 if (lineSplit.length != 2 || !ConfigMap.containsKey(lineSplit[0])) throw new ParsConfigException("wrong config file format");
 
+                int num = Integer.parseInt(lineSplit[1]);
+                if (num < 0) throw new ParsConfigException("wrong config file format");
                 ConfigMap.put(lineSplit[0], Integer.parseInt(lineSplit[1]));
 
             }
