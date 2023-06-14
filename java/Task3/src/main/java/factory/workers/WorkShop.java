@@ -30,7 +30,7 @@ public class WorkShop {
         this.accessoryStorage = accessoryStorage;
         this.logger = LogManager.getLogger("WorkShop");
         this.carStorage = carStorage;
-        workersThreadPool = Executors.newFixedThreadPool(6);
+        workersThreadPool = Executors.newFixedThreadPool(size);
     }
 
     public void stop() {
