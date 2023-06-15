@@ -7,17 +7,16 @@ import factory.storage.EngineStorage;
 import factory.suppliers.AccessorySupplier;
 import factory.suppliers.CarBodySupplier;
 import factory.suppliers.EngineSupplier;
-import factory.suppliers.Supplier;
+import factory.utils.Flag;
 import factory.workers.WorkShop;
 
 import java.util.ArrayList;
-import java.util.function.UnaryOperator;
 
 
 public class Factory {
     private ArrayList<AccessorySupplier> accessorySuppliers;
-    private CarBodySupplier carBodySupplier;
-    private EngineSupplier engineSupplier;
+    private final CarBodySupplier carBodySupplier;
+    private final EngineSupplier engineSupplier;
 
     private Context context;
 
@@ -29,10 +28,12 @@ public class Factory {
     private final CarStorage carStorage;
     private WorkShop workersThreadPool;
 
-    private Controller controller;
+    private final Controller controller;
 
 
-//    private static final int STANDARD_POOL_SIZE = 3;
+    private final Object Monitor = new Object();
+    
+    private final Flag isRunning = new Flag();
 
 
     public Factory(Context context) {
@@ -43,34 +44,19 @@ public class Factory {
 
         accessorySuppliers = new ArrayList<>(context.getAccessorySuppliers());
         for (int i = 0; i < context.getAccessorySuppliers(); i++)
-            accessorySuppliers.add(new AccessorySupplier(accessoryStorage));
+            accessorySuppliers.add(new AccessorySupplier(accessoryStorage, isRunning, Monitor));
         carStorage = new CarStorage(context.getStorageAutoSize());
         workersThreadPool = new WorkShop(context.getWorkers(), carStorage, accessoryStorage, engineStorage, carBodyStorage);
 
 
         carDealers = new ArrayList<>(context.getDealers());
         for (int i = 0; i < context.getDealers(); i++)
-            carDealers.add(new Dealer(carStorage));
+            carDealers.add(new Dealer(carStorage, isRunning, Monitor));
 
 
-
-    }
-
-    public void start() {
-        UnaryOperator<AccessorySupplier> uo = s -> new AccessorySupplier(accessoryStorage);
-        accessorySuppliers.replaceAll(uo);
-
-
-        carBodySupplier = new CarBodySupplier(carBodyStorage);
-        engineSupplier = new EngineSupplier(engineStorage);
-        controller = new Controller(workersThreadPool, carStorage);
-
-
-        UnaryOperator<Dealer> uo1 = s -> new Dealer(carStorage);
-        carDealers.replaceAll(uo1);
-
-
-
+        carBodySupplier = new CarBodySupplier(carBodyStorage, isRunning, Monitor);
+        engineSupplier = new EngineSupplier(engineStorage, isRunning, Monitor);
+        controller = new Controller(workersThreadPool, carStorage, isRunning, Monitor);
         for (var sup : accessorySuppliers)
             sup.start();
 
@@ -83,17 +69,20 @@ public class Factory {
         for (var dealer : carDealers)
             dealer.start();
 
+
+    }
+
+    public void start() {
+        isRunning.changeState();
+
+
+        synchronized (Monitor) {
+            Monitor.notifyAll();
+        }
     }
 
     public void stop() {
-        carBodySupplier.interrupt();
-        engineSupplier.interrupt();
-        for (var sup : accessorySuppliers) {
-            sup.interrupt();
-        }
-        for (var sup : carDealers) {
-            sup.interrupt();
-        }
+        isRunning.changeState();
     }
 
     public AccessoryStorage getAccessoryStorage() {
@@ -111,9 +100,11 @@ public class Factory {
     public void setEngineSupplierDelay(int delay) {
         engineSupplier.setDelay(delay);
     }
+
     public void setCarBodySupplierDelay(int delay) {
         carBodySupplier.setDelay(delay);
     }
+
     public void setAccessorySuppliersDelay(int delay) {
         for (var sup : accessorySuppliers) {
             sup.setDelay(delay);

@@ -2,11 +2,11 @@ package factory.suppliers;
 
 import factory.products.Engine;
 import factory.storage.EngineStorage;
-import factory.storage.Storage;
+import factory.utils.Flag;
 
 public class EngineSupplier extends Supplier<Engine> {
 
-    public EngineSupplier(EngineStorage storage) {
-        super(Engine.class, storage);
+    public EngineSupplier(EngineStorage storage, Flag isRunning, Object monitor) {
+        super(Engine.class, storage, monitor, isRunning);
     }
 }

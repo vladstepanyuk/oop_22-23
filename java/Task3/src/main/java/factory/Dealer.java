@@ -3,6 +3,7 @@ package factory;
 import factory.exception.SupplierException;
 import factory.products.Car;
 import factory.storage.CarStorage;
+import factory.utils.Flag;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -16,6 +17,8 @@ public class Dealer extends Thread {
     private Car product;
 
     final Logger logger;
+    private final Flag isRunning;
+    private final Object Monitor;
 
     static {
         idPool = new AtomicInteger(0);
@@ -28,8 +31,10 @@ public class Dealer extends Thread {
 
 
 
-    public Dealer(CarStorage storage) {
+    public Dealer(CarStorage storage, Flag isRunning, Object monitor) {
         this.storage = storage;
+        this.isRunning = isRunning;
+        Monitor = monitor;
         logger =  LogManager.getLogger("Car dealer N"+idPool.getAndIncrement());
 
     }
@@ -50,6 +55,10 @@ public class Dealer extends Thread {
     public void run() {
         try {
             while (true) {
+                if (!isRunning.isTrue())
+                    synchronized (Monitor) {
+                        Monitor.wait();
+                    }
                 getProduct();
                 logger.info("sell Auto <" + product.getID()+"> (Body: <"+product.getCarBodyID() + ">, Engine: <" +
                         product.getEngineID()+ ">, Accessory: <" +
@@ -57,6 +66,8 @@ public class Dealer extends Thread {
             }
         } catch (SupplierException e) {
             logger.error("unable to get a car. cause: "+ e.getCause().getMessage());
+        } catch (InterruptedException ignored) {
+
         }
     }
 }
