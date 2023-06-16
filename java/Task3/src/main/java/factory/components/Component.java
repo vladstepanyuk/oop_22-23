@@ -1,9 +1,9 @@
-package factory.products;
+package factory.components;
 
-public class Product {
+public class Component {
     private final long ID;
 
-    public Product(long ID) {
+    public Component(long ID) {
         this.ID = ID;
     }
 

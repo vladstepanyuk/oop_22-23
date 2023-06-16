@@ -1,12 +1,12 @@
 package factory.storage;
 
-import factory.products.Product;
+import factory.components.Component;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.concurrent.ArrayBlockingQueue;
 
-public class Storage<T extends Product> {
+public class Storage<T extends Component> {
     private ArrayBlockingQueue<T> queue;
     private int storageSize;
     Class<T> tClass;

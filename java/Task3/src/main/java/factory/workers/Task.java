@@ -1,9 +1,9 @@
 package factory.workers;
 
-import factory.products.Accessory;
-import factory.products.Car;
-import factory.products.CarBody;
-import factory.products.Engine;
+import factory.components.Accessory;
+import factory.components.Car;
+import factory.components.CarBody;
+import factory.components.Engine;
 import factory.storage.*;
 import factory.utils.IDManager;
 import org.apache.logging.log4j.Logger;

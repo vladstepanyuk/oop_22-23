@@ -1,6 +1,6 @@
 package factory.storage;
 
-import factory.products.Engine;
+import factory.components.Engine;
 
 public class EngineStorage extends Storage<Engine> {
     public EngineStorage(int storageSize) {

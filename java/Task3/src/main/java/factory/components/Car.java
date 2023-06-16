@@ -1,6 +1,6 @@
-package factory.products;
+package factory.components;
 
-public class Car extends Product {
+public class Car extends Component {
     private final CarBody carBody;
     private final Engine engine;
     private final Accessory accessory;

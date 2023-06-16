@@ -1,7 +1,7 @@
 package factory.suppliers;
 
 import factory.exception.SupplierException;
-import factory.products.Product;
+import factory.components.Component;
 import factory.storage.Storage;
 import factory.utils.Flag;
 import factory.utils.IDManager;
@@ -9,7 +9,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 
-public class Supplier<T extends Product> extends Thread {
+public class Supplier<T extends Component> extends Thread {
     private int Delay = 100;
     private final Class<T> tClass;
 

@@ -1,8 +1,6 @@
 package factory.storage;
 
-import factory.Controller;
-import factory.products.Car;
-import factory.workers.WorkShop;
+import factory.components.Car;
 
 public class CarStorage extends Storage<Car> {
 

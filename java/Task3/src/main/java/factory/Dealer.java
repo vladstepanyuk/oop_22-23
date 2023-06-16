@@ -1,7 +1,6 @@
 package factory;
 
-import factory.exception.SupplierException;
-import factory.products.Car;
+import factory.components.Car;
 import factory.storage.CarStorage;
 import factory.utils.Flag;
 import org.apache.logging.log4j.LogManager;

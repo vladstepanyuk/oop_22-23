@@ -1,6 +1,6 @@
 package factory.suppliers;
 
-import factory.products.Accessory;
+import factory.components.Accessory;
 import factory.storage.AccessoryStorage;
 import factory.utils.Flag;
 

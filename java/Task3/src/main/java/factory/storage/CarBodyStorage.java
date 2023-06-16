@@ -1,6 +1,6 @@
 package factory.storage;
 
-import factory.products.CarBody;
+import factory.components.CarBody;
 
 public class CarBodyStorage extends Storage<CarBody> {
     public CarBodyStorage(int storageSize) {

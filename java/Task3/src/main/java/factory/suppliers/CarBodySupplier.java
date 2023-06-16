@@ -1,6 +1,6 @@
 package factory.suppliers;
 
-import factory.products.CarBody;
+import factory.components.CarBody;
 import factory.storage.CarBodyStorage;
 import factory.utils.Flag;
 
