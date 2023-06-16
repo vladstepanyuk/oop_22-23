@@ -10,7 +10,7 @@ import org.apache.logging.log4j.Logger;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Dealer extends Thread {
-    private static int Delay = 100;
+    private int Delay = 100;
     static private final AtomicInteger idPool;
 
     private final CarStorage storage;
@@ -18,14 +18,14 @@ public class Dealer extends Thread {
 
     final Logger logger;
     private final Flag isRunning;
-    private final Object Monitor;
+    private final Object monitor;
 
     static {
         idPool = new AtomicInteger(0);
     }
 
 
-    public static void setDelay(int delay) {
+    public void setDelay(int delay) {
         Delay = delay;
     }
 
@@ -34,20 +34,15 @@ public class Dealer extends Thread {
     public Dealer(CarStorage storage, Flag isRunning, Object monitor) {
         this.storage = storage;
         this.isRunning = isRunning;
-        Monitor = monitor;
+        this.monitor = monitor;
         logger =  LogManager.getLogger("Car dealer N"+idPool.getAndIncrement());
 
     }
 
-    public void getProduct() throws SupplierException {
-        try {
-            logger.info("trying to get product");
-            sleep(Delay);
-            product =  storage.get();
-
-        } catch (Exception e) {
-            throw new SupplierException("unable to make a product", e);
-        }
+    public void getProduct() throws InterruptedException {
+        logger.info("trying to get product");
+        sleep(Delay);
+        product =  storage.get();
 
     }
 
@@ -56,18 +51,16 @@ public class Dealer extends Thread {
         try {
             while (true) {
                 if (!isRunning.isTrue())
-                    synchronized (Monitor) {
-                        Monitor.wait();
+                    synchronized (monitor) {
+                        monitor.wait();
                     }
                 getProduct();
                 logger.info("sell Auto <" + product.getID()+"> (Body: <"+product.getCarBodyID() + ">, Engine: <" +
                         product.getEngineID()+ ">, Accessory: <" +
                         product.getAccessoryID() +">)");
             }
-        } catch (SupplierException e) {
+        } catch (Exception e) {
             logger.error("unable to get a car. cause: "+ e.getCause().getMessage());
-        } catch (InterruptedException ignored) {
-
         }
     }
 }

@@ -24,24 +24,18 @@ public class Storage<T extends Product> {
         return queue.isEmpty();
     }
 
-    public synchronized void supply(T product) {
+    public synchronized void supply(T product) throws InterruptedException {
         while (isFull()) {
-            try {
-                wait();
-            } catch (InterruptedException ignored) {
-            }
+            wait();
         }
         logger.info("supply product: <" + product.getID() + ">");
         queue.add(product);
         notify();
     }
 
-    public synchronized T get() {
+    public synchronized T get() throws InterruptedException {
         while (queue.isEmpty()) {
-            try {
-                wait();
-            } catch (InterruptedException ignored) {
-            }
+            wait();
         }
         logger.info("supply product: <" + queue.peek().getID() + ">");
         notifyAll();

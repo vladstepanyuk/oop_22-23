@@ -14,11 +14,10 @@ import java.util.ArrayList;
 
 
 public class Factory {
-    private ArrayList<AccessorySupplier> accessorySuppliers;
+    private final ArrayList<AccessorySupplier> accessorySuppliers;
     private final CarBodySupplier carBodySupplier;
     private final EngineSupplier engineSupplier;
 
-    private Context context;
 
     private final ArrayList<Dealer> carDealers;
 
@@ -26,13 +25,10 @@ public class Factory {
     private final CarBodyStorage carBodyStorage;
     private final EngineStorage engineStorage;
     private final CarStorage carStorage;
-    private WorkShop workersThreadPool;
+    private final WorkShop workersThreadPool;
 
-    private final Controller controller;
+    private final Object monitor = new Object();
 
-
-    private final Object Monitor = new Object();
-    
     private final Flag isRunning = new Flag();
 
 
@@ -44,19 +40,19 @@ public class Factory {
 
         accessorySuppliers = new ArrayList<>(context.getAccessorySuppliers());
         for (int i = 0; i < context.getAccessorySuppliers(); i++)
-            accessorySuppliers.add(new AccessorySupplier(accessoryStorage, isRunning, Monitor));
+            accessorySuppliers.add(new AccessorySupplier(accessoryStorage, isRunning, monitor));
         carStorage = new CarStorage(context.getStorageAutoSize());
         workersThreadPool = new WorkShop(context.getWorkers(), carStorage, accessoryStorage, engineStorage, carBodyStorage);
 
 
         carDealers = new ArrayList<>(context.getDealers());
         for (int i = 0; i < context.getDealers(); i++)
-            carDealers.add(new Dealer(carStorage, isRunning, Monitor));
+            carDealers.add(new Dealer(carStorage, isRunning, monitor));
 
 
-        carBodySupplier = new CarBodySupplier(carBodyStorage, isRunning, Monitor);
-        engineSupplier = new EngineSupplier(engineStorage, isRunning, Monitor);
-        controller = new Controller(workersThreadPool, carStorage, isRunning, Monitor);
+        carBodySupplier = new CarBodySupplier(carBodyStorage, isRunning, monitor);
+        engineSupplier = new EngineSupplier(engineStorage, isRunning, monitor);
+        Controller controller = new Controller(workersThreadPool, carStorage, isRunning, monitor);
         for (var sup : accessorySuppliers)
             sup.start();
 
@@ -76,8 +72,8 @@ public class Factory {
         isRunning.changeState();
 
 
-        synchronized (Monitor) {
-            Monitor.notifyAll();
+        synchronized (monitor) {
+            monitor.notifyAll();
         }
     }
 
@@ -85,17 +81,7 @@ public class Factory {
         isRunning.changeState();
     }
 
-    public AccessoryStorage getAccessoryStorage() {
-        return accessoryStorage;
-    }
 
-    public CarBodyStorage getCarBodyStorage() {
-        return carBodyStorage;
-    }
-
-    public EngineStorage getEngineStorage() {
-        return engineStorage;
-    }
 
     public void setEngineSupplierDelay(int delay) {
         engineSupplier.setDelay(delay);
@@ -112,7 +98,9 @@ public class Factory {
     }
 
     public void setDealersDelay(int delay) {
-        Dealer.setDelay(delay);
+        for (var carDealer : carDealers) {
+            carDealer.setDelay(delay);
+        }
     }
 
     public int getTotalCarProduced() {

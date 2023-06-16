@@ -17,7 +17,7 @@ public class Supplier<T extends Product> extends Thread {
     private T product;
 
     final Logger logger;
-    private final Object Monitor;
+    private final Object monitor;
 
 
     final Flag isRunning;
@@ -31,7 +31,7 @@ public class Supplier<T extends Product> extends Thread {
         this.tClass = tClass;
         this.tStorage = tStorage;
         logger = LogManager.getLogger(tClass.getName() + " supplier");
-        Monitor = monitor;
+        this.monitor = monitor;
 
         this.isRunning = isRunning;
     }
@@ -48,7 +48,7 @@ public class Supplier<T extends Product> extends Thread {
 
     }
 
-    public void supplyToTheStorage() {
+    public void supplyToTheStorage() throws InterruptedException {
         logger.info("trying to supply product");
         tStorage.supply(product);
         product = null;
@@ -58,8 +58,8 @@ public class Supplier<T extends Product> extends Thread {
         try {
             while (true) {
                 if (!isRunning.isTrue()) {
-                    synchronized (Monitor) {
-                        Monitor.wait();
+                    synchronized (monitor) {
+                        monitor.wait();
                     }
                 }
                 if (product == null) {

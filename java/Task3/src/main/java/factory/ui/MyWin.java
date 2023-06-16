@@ -13,19 +13,15 @@ import java.util.TimerTask;
 public class MyWin extends JFrame {
     private final Factory factory;
     private static final int MIN_DELAY = 50;
-
-    private static final int DELAY = 100;
     private static final int PERIOD = 100;
-    private static final int MAX_DELAY = 1000;
-    private static final int STAND_DELAY = 100;
-    private JTextField CarsNumber;
-    private JTextField CarBodyNumber;
-    private JTextField EngineNumber;
-    private JTextField AccessoryNumber;
-    private JTextField CarsProduced;
-    private JPanel standardPanel;
+    private final JTextField CarsNumber;
+    private final JTextField CarBodyNumber;
+    private final JTextField EngineNumber;
+    private final JTextField AccessoryNumber;
+    private final JTextField CarsProduced;
+    private final JPanel standardPanel;
 
-    private JButton start_stop;
+    private final JButton start_stop;
 
     private class Task extends TimerTask {
         @Override
@@ -105,59 +101,22 @@ public class MyWin extends JFrame {
 
         JPanel sliderPanel = new JPanel(new GridLayout(0, 1));
         sliderPanel.add(new JLabel("Engine Supplier Delay"));
-        SliderListener.setFactory(factory);
-
-
-        JSlider DelayEngineSupplier = new JSlider(JSlider.HORIZONTAL,
-                MIN_DELAY, MAX_DELAY, STAND_DELAY);
-        DelayEngineSupplier.addChangeListener(SliderListener.ENGINE);
-        DelayEngineSupplier.setPaintTicks(true);
-        DelayEngineSupplier.setPaintLabels(true);
-        DelayEngineSupplier.setMajorTickSpacing(100);
-        DelayEngineSupplier.setMinorTickSpacing(1);
-
-        sliderPanel.add(DelayEngineSupplier);
-
+        sliderPanel.add(new Slider(factory, Slider.SliderType.ENGINE));
         mainPanel.add(sliderPanel);
 
         sliderPanel = new JPanel(new GridLayout(0, 1));
         sliderPanel.add(new JLabel("Accessory Supplier Delay"));
-
-        JSlider DelayAccessorySupplier = new JSlider(JSlider.HORIZONTAL,
-                MIN_DELAY, MAX_DELAY, STAND_DELAY);
-        DelayAccessorySupplier.addChangeListener(SliderListener.ACCESSORY);
-        DelayAccessorySupplier.setPaintTicks(true);
-        DelayAccessorySupplier.setPaintLabels(true);
-        DelayAccessorySupplier.setMajorTickSpacing(100);
-        DelayAccessorySupplier.setMinorTickSpacing(1);
-        sliderPanel.add(DelayAccessorySupplier);
-
+        sliderPanel.add(new Slider(factory, Slider.SliderType.ACCESSORY));
         mainPanel.add(sliderPanel);
+
         sliderPanel = new JPanel(new GridLayout(0, 1));
         sliderPanel.add(new JLabel("Car body Supplier Delay"));
-
-        JSlider CarBodySupplierDelay = new JSlider(JSlider.HORIZONTAL,
-                MIN_DELAY, MAX_DELAY, STAND_DELAY);
-        CarBodySupplierDelay.addChangeListener(SliderListener.CAR_BODY);
-
-        CarBodySupplierDelay.setPaintTicks(true);
-        CarBodySupplierDelay.setPaintLabels(true);
-        CarBodySupplierDelay.setMajorTickSpacing(100);
-        CarBodySupplierDelay.setMinorTickSpacing(1);
-        sliderPanel.add(CarBodySupplierDelay);
-
+        sliderPanel.add(new Slider(factory, Slider.SliderType.CAR_BODY));
         mainPanel.add(sliderPanel);
+
         sliderPanel = new JPanel(new GridLayout(0, 1));
         sliderPanel.add(new JLabel("Dealer  Delay"));
-
-        JSlider DealerDelay = new JSlider(JSlider.HORIZONTAL,
-                MIN_DELAY, MAX_DELAY, STAND_DELAY);
-        DealerDelay.addChangeListener(SliderListener.DEALER);
-        DealerDelay.setPaintTicks(true);
-        DealerDelay.setPaintLabels(true);
-        DealerDelay.setMajorTickSpacing(100);
-        DealerDelay.setMinorTickSpacing(1);
-        sliderPanel.add(DealerDelay);
+        sliderPanel.add(new Slider(factory, Slider.SliderType.DEALER));
 
         java.util.Timer timer1 = new Timer();
         timer1.scheduleAtFixedRate(new Task(), MIN_DELAY, PERIOD);

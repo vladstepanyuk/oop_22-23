@@ -35,13 +35,16 @@ public class Task implements Runnable {
         try {
             product = Car.class.getConstructor(Integer.TYPE, CarBody.class, Engine.class, Accessory.class).newInstance(IDManager.getUniqueID(),
                     carBodyStorage.get(), engineStorage.get(), accessoryStorage.get());
-        } catch (Exception ignored) {
+            integer.incrementAndGet();
+            carStorage.supply(product);
+            logger.info("make Auto <" + product.getID()+"> (Body: <"+product.getCarBodyID() + ">, Engine: <" +
+                    product.getEngineID()+ ">, Accessory: <" +
+                    product.getAccessoryID() +">)");
+
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return;
         }
-        integer.incrementAndGet();
-        carStorage.supply(product);
-        logger.info("make Auto <" + product.getID()+"> (Body: <"+product.getCarBodyID() + ">, Engine: <" +
-                product.getEngineID()+ ">, Accessory: <" +
-                product.getAccessoryID() +">)");
 
     }
 }

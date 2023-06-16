@@ -3,15 +3,18 @@ package factory;
 import factory.storage.CarStorage;
 import factory.utils.Flag;
 import factory.workers.WorkShop;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class Controller extends Thread {
 
     private final WorkShop workShop;
     private final CarStorage carStorage;
-    //    private final Object monitor = new Object();
     private final Flag isRunning;
 
-    private final Object Monitor;
+    private final Object monitor;
+
+    final Logger logger = LogManager.getLogger("Controller");
 
 
 
@@ -19,7 +22,7 @@ public class Controller extends Thread {
         this.workShop = workShop;
         this.carStorage = carStorage;
         this.isRunning = isRunning;
-        Monitor = monitor;
+        this.monitor = monitor;
     }
 
 //    private  Car product;
@@ -29,8 +32,8 @@ public class Controller extends Thread {
         try {
             while (true) {
                 if (!isRunning.isTrue())
-                    synchronized (Monitor) {
-                        Monitor.wait();
+                    synchronized (monitor) {
+                        monitor.wait();
                     }
 
                 workShop.submitTask();
@@ -39,8 +42,8 @@ public class Controller extends Thread {
                     carStorage.wait();
                 }
             }
-        } catch (InterruptedException ignored) {
-
+        } catch (Exception exception) {
+            logger.error(exception.getMessage());
         }
 
 

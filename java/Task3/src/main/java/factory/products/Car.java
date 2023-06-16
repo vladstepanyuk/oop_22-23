@@ -1,6 +1,6 @@
 package factory.products;
 
-public class Car extends Product{
+public class Car extends Product {
     private final CarBody carBody;
     private final Engine engine;
     private final Accessory accessory;
@@ -19,6 +19,7 @@ public class Car extends Product{
     public long getEngineID() {
         return engine.getID();
     }
+
     public long getCarBodyID() {
         return carBody.getID();
     }
